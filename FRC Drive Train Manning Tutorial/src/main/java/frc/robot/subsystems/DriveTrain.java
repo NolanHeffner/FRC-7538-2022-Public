@@ -5,22 +5,29 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  PWMVictorSPX left1 = new PWMVictorSPX(Constants.LEFT_1_PORT);
-  PWMVictorSPX left2 = new PWMVictorSPX(Constants.LEFT_2_PORT);
-  PWMVictorSPX right1 = new PWMVictorSPX(Constants.RIGHT_1_PORT);
-  PWMVictorSPX right2 = new PWMVictorSPX(Constants.RIGHT_2_PORT);
+  Talon left1 = new Talon(Constants.LEFT_1_PORT);
+  Talon left2 = new Talon(Constants.LEFT_2_PORT);
+  Talon right1 = new Talon(Constants.RIGHT_1_PORT);
+  Talon right2 = new Talon(Constants.RIGHT_2_PORT);
 
-  public DriveTrain() {}
+  public DriveTrain() {
+    invertLeftMotors();
+  }
+
+  public void invertLeftMotors() {
+    left1.setInverted(true);
+    left2.setInverted(true);
+  }
 
   public void setLeftMotors(double speed) {
-    left1.set(-speed);
-    left2.set(-speed);
+    left1.set(speed);
+    left2.set(speed);
   }
 
   public void setRightMotors(double speed) {

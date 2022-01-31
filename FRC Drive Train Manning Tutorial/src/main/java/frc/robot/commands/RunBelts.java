@@ -5,9 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ConveyerBelts;
-
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
@@ -23,11 +20,11 @@ public class RunBelts extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RunBelts(ConveyerBelts subsystem, BooleanSupplier XPressed, BooleanSupplier YPressed, BooleanSupplier BPressed) {
+  public RunBelts(ConveyerBelts subsystem, boolean XPressed, boolean YPressed, boolean BPressed) {
     m_subsystem = subsystem;
-    this.XPressed = XPressed.getAsBoolean();
-    this.YPressed = YPressed.getAsBoolean();
-    this.BPressed = BPressed.getAsBoolean();
+    this.XPressed = XPressed;
+    this.YPressed = YPressed;
+    this.BPressed = BPressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }

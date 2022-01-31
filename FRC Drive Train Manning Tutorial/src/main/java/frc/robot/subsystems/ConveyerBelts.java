@@ -4,16 +4,21 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ConveyerBelts extends SubsystemBase {
 
-  PWMVictorSPX leftBelt1 = new PWMVictorSPX(Constants.LEFT_BELT_1_PORT);
-  PWMVictorSPX leftBelt2 = new PWMVictorSPX(Constants.LEFT_BELT_2_PORT);
-  PWMVictorSPX rightBelt1 = new PWMVictorSPX(Constants.RIGHT_BELT_1_PORT);
-  PWMVictorSPX rightBelt2 = new PWMVictorSPX(Constants.RIGHT_BELT_2_PORT);
+  Talon leftBelt1 = new Talon(Constants.LEFT_BELT_1_PORT);
+  Talon leftBelt2 = new Talon(Constants.LEFT_BELT_2_PORT);
+  Talon rightBelt1 = new Talon(Constants.RIGHT_BELT_1_PORT);
+  Talon rightBelt2 = new Talon(Constants.RIGHT_BELT_2_PORT);
+
+  public void invertLeftBelts() {
+    leftBelt1.setInverted(true);
+    leftBelt2.setInverted(true);
+  }
 
   public void setBeltSpeed(double speed) {
     // you have to invert the speed because it's with respect to orientation and left vs. right side are flipped 180 degrees
