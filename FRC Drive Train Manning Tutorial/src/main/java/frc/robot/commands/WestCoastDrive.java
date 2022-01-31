@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -20,10 +19,10 @@ public class WestCoastDrive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX) {
+  public WestCoastDrive(DriveTrain subsystem, double leftStickY, double rightStickX) {
     m_subsystem = subsystem;
-    this.leftStickY = leftStickY.getAsDouble();
-    this.rightStickX = rightStickX.getAsDouble();
+    this.leftStickY = leftStickY;
+    this.rightStickX = rightStickX;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }

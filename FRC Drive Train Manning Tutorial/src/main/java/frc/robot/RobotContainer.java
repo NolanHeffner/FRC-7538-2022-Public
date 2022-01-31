@@ -32,20 +32,10 @@ public class RobotContainer {
 
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
-    
-    new WestCoastDrive(
-      m_driveTrain,
-      () -> driver.getLeftY(),
-      () -> driver.getRightX());
-
-    new RunBelts(
-      m_conveyerBelts,
-      () -> driver.getXButton(),
-      () -> driver.getYButton(),
-      () -> driver.getBButton());
-
+    m_driveTrain.setDefaultCommand(new WestCoastDrive(m_driveTrain,driver.getLeftY(),driver.getRightX()));
+    m_conveyerBelts.setDefaultCommand(new RunBelts(m_conveyerBelts,driver.getXButton(),driver.getYButton(),driver.getBButton()));
     autoDrive = new AutoDrive(m_driveTrain);
-
+    
     // Configure the button bindings
     configureButtonBindings();
   }
