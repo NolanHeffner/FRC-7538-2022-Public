@@ -58,4 +58,6 @@ public final class Constants {
     public static double LOW_BELT_SPEED = 0.3;
     public static double MEDIUM_BELT_SPEED = 0.6;
     public static double HIGH_BELT_SPEED = 1;
+    // Drive train max speed set
+    public static double DRIVE_SPEED = 0.7;
 }

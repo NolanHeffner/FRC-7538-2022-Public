@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -41,7 +42,7 @@ public class WestCoastDrive extends CommandBase {
     // Differential mathematics; yes Anthony, I used your suggestion :) let's hope it's good; if not, we can always redo it
     double leftInput = 0.5 * (leftStickY + rightStickX);
     double rightInput = 0.5 * (leftStickY - rightStickX);
-    double scalingFactor = 1 / Math.min(leftInput,rightInput);
+    double scalingFactor = Constants.DRIVE_SPEED / Math.min(leftInput,rightInput);
     leftInput *= scalingFactor;
     rightInput *= scalingFactor;
 
