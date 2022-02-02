@@ -5,16 +5,16 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  Talon left1 = new Talon(Constants.LEFT_1_PORT);
-  Talon left2 = new Talon(Constants.LEFT_2_PORT);
-  Talon right1 = new Talon(Constants.RIGHT_1_PORT);
-  Talon right2 = new Talon(Constants.RIGHT_2_PORT);
+  WPI_TalonFX left1 = new WPI_TalonFX(Constants.LEFT_1_PORT);
+  WPI_TalonFX left2 = new WPI_TalonFX(Constants.LEFT_2_PORT);
+  WPI_TalonFX right1 = new WPI_TalonFX(Constants.RIGHT_1_PORT);
+  WPI_TalonFX right2 = new WPI_TalonFX(Constants.RIGHT_2_PORT);
 
   public DriveTrain() {
     invertLeftMotors();
