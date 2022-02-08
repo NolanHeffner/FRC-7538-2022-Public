@@ -15,13 +15,7 @@ package frc.robot;
 public final class Constants {
     
     // Controller ports
-    // public static int DRIVER_JOYSTICK_PORT = 0;
     public static int DRIVER_XBOX_PORT = 0;
-
-    // Controller button numbers (for controller mapping)
-    // public static int JOYSTICK_AUXILIARY_BUTTON_1 = 0; // we aren't planning to use a joystick currently
-    // public static int JOYSTICK_X_AXIS = 1;
-    // public static int JOYSTICK_Y_AXIS = 2;
 
     // Xbox Controller button number template
     public static int XBOX_LEFT_STICK_X = 0;
@@ -49,15 +43,15 @@ public final class Constants {
     public static int RIGHT_1_PORT = 2;
     public static int RIGHT_2_PORT = 3;
 
-    public static int LEFT_BELT_1_PORT = 4;
-    public static int LEFT_BELT_2_PORT = 5;
-    public static int RIGHT_BELT_1_PORT = 6;
-    public static int RIGHT_BELT_2_PORT = 7;
+    public static int INTAKE_WHEEL_PORT = 4;
+    public static int SHOOTER_WHEEL_PORT = 5;
     
-    // Conveyer Belt Speeds - to be tweaked in testing to allow for shots from various angles and distances
-    public static double LOW_BELT_SPEED = 0.3;
-    public static double MEDIUM_BELT_SPEED = 0.6;
-    public static double HIGH_BELT_SPEED = 1;
+    // Wheel speeds
+    public static double INTAKE_SPEED;
+    public static double LOW_SHOOT_SPEED = 0.3;
+    public static double MEDIUM_SHOOT_SPEED = 0.6;
+    public static double HIGH_SHOOT_SPEED = 1;
+
     // Drive train max speed set
-    public static double DRIVE_SPEED = 0.7;
+    public static double MAX_DRIVE_SPEED = 0.7;
 }

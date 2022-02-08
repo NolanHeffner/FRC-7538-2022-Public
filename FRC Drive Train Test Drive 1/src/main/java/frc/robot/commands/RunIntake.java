@@ -4,27 +4,25 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ConveyerBelts;
+import frc.robot.subsystems.WheelSystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
 /** An example command that uses an example subsystem. */
-public class RunBelts extends CommandBase {
+public class RunIntake extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  private ConveyerBelts m_subsystem;
-  private boolean XPressed, YPressed, BPressed;
+  private WheelSystem m_subsystem;
+  private boolean APressed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RunBelts(ConveyerBelts subsystem, boolean XPressed, boolean YPressed, boolean BPressed) {
+  public RunIntake(WheelSystem subsystem, boolean APressed) {
     m_subsystem = subsystem;
-    this.XPressed = XPressed;
-    this.YPressed = YPressed;
-    this.BPressed = BPressed;
+    this.APressed = APressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -36,21 +34,14 @@ public class RunBelts extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double beltSpeed = 0;
-    if(BPressed) {
-      beltSpeed = Constants.HIGH_BELT_SPEED;
-    } else if(YPressed) {
-      beltSpeed = Constants.MEDIUM_BELT_SPEED;
-    } else if(XPressed) {
-      beltSpeed = Constants.LOW_BELT_SPEED;
-    }
-    m_subsystem.setBeltSpeed(beltSpeed);
+    double shootSpeed = APressed ? Constants.INTAKE_SPEED : 0;
+    m_subsystem.setIntakeWheelSpeed(shootSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setBeltSpeed(0);
+    m_subsystem.setShooterWheelSpeed(0);
   }
 
   // Returns true when the command should end.
