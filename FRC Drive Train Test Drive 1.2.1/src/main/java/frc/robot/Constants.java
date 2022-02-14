@@ -38,20 +38,28 @@ public final class Constants {
     public static int XBOX_RIGHT_STICK_BUTTON = 10;
 
     // Motor ports - arbitrary for now, probably will be 0 thru 7 when the robot is done tho
-    public static int LEFT_1_PORT = 0;
-    public static int LEFT_2_PORT = 1;
-    public static int RIGHT_1_PORT = 2;
-    public static int RIGHT_2_PORT = 3;
+    public static int LEFT_1_PORT = 1;
+    public static int LEFT_2_PORT = 2;
+    public static int RIGHT_1_PORT = 3;
+    public static int RIGHT_2_PORT = 4;
 
     public static int INTAKE_WHEEL_PORT = 4;
     public static int SHOOTER_WHEEL_PORT = 5;
     
     // Wheel speeds
-    public static double INTAKE_SPEED;
+    public static double INTAKE_SPEED = 0.5;
     public static double LOW_SHOOT_SPEED = 0.3;
     public static double MEDIUM_SHOOT_SPEED = 0.6;
     public static double HIGH_SHOOT_SPEED = 1;
 
-    // Drive train max speed set
-    public static double MAX_DRIVE_SPEED = 0.7;
+    // Dead zones
+    public static double LY_DEAD_ZONE, RX_DEAD_ZONE, RT_DEAD_ZONE = 0.15; // RT = Right trigger
+
+    // Drive train config
+    public static double MAX_DRIVE_SPEED = 0.3;
+    public static double TURN_FACTOR = 0.7;
+    public static double SCALING_FACTOR = 1 / (1 + TURN_FACTOR);
+
+    // Wheel system config
+    public static double MAX_INTAKE_SPEED = 0.4;
 }

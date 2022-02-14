@@ -25,21 +25,11 @@ public class DriveTrain extends SubsystemBase {
     left2.setInverted(true);
   }
 
-  public void setLeftMotors(double speed) {
-    left1.set(speed);
-    left2.set(speed);
-  }
-
-  public void setRightMotors(double speed) {
-    right1.set(speed);
-    right2.set(speed);
-  }
-
-  public void stopMotors() {
-    left1.set(0);
-    left2.set(0);
-    right1.set(0);
-    right2.set(0);
+  public void setMotors(double lSpeed, double rSpeed) {
+    left1.set(lSpeed);
+    left2.set(lSpeed);
+    right1.set(rSpeed);
+    right2.set(rSpeed);
   }
 
   @Override
