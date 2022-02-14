@@ -15,8 +15,14 @@ public class WheelSystem extends SubsystemBase {
   PWMVictorSPX shooterWheel = new PWMVictorSPX(Constants.SHOOTER_WHEEL_PORT);
 
   // Set wheel-controlling motor speeds
-  public void setIntakeWheelSpeed(double speed) {intakeWheel.set(speed);}
-  public void setShooterWheelSpeed(double speed) {shooterWheel.set(speed);}
+  
+  public void setIntakeWheelSpeed(double speed) {
+    intakeWheel.set(speed);
+  }
+  
+  public void setShooterWheelSpeed(double speed) {
+    shooterWheel.set(speed);
+  }
 
   @Override
   public void periodic() {

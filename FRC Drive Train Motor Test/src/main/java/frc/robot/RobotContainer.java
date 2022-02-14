@@ -6,15 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.AutoDrive;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.ShootBalls;
-import frc.robot.commands.WestCoastDrive;
-import frc.robot.subsystems.WheelSystem;
-import frc.robot.subsystems.DriveTrain;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.RunMotor;
+import frc.robot.subsystems.Motor;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,21 +20,19 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // All the subsystems
-  private final DriveTrain m_driveTrain = new DriveTrain();
-  private final AutoDrive autoDrive;
-  private final WheelSystem m_wheelSystem = new WheelSystem();
+  private final Motor m_motor = new Motor();
 
   // Instantiate driver controller
-  public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
+  XboxController driver = new XboxController(0);
 
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
-    m_driveTrain.setDefaultCommand(new WestCoastDrive(m_driveTrain,driver.getLeftY(),driver.getRightX()));
-    m_wheelSystem.setDefaultCommand(new ShootBalls(m_wheelSystem,driver.getXButton(),driver.getYButton(),driver.getBButton()));
-    autoDrive = new AutoDrive(m_driveTrain);
-    
     // Configure the button bindings
     configureButtonBindings();
+
+    // SmartDashboard.putNumber("LeftYAxis: ",driver.getLeftY());
+    System.out.println("setting default command");
+    m_motor.setDefaultCommand(new RunMotor(m_motor, () -> driver.getLeftY()));
   }
 
   /**
@@ -50,16 +43,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Create buttons to link to commands
-    
-    // JoystickButton joystickButton1 = new JoystickButton(driver1, Constants.JOYSTICK_AUXILIARY_BUTTON_1);
-    JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
-
-    // Link buttons to commands
-    xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, driver.getAButton()));
-    
-    
-    //.whenReleased
-    // etc. for different actions
+    //JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
+    //xboxControllerAButton.whenPressed(new RunMotor(m_motor,driver.getLeftY())).whenReleased(new RunMotor(m_motor,0));
   }
 
   /**
@@ -69,6 +54,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoDrive;
+    return null;
   }
 }

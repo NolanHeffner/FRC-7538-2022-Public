@@ -4,27 +4,26 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.WheelSystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.WheelSystem;
+import java.util.function.DoubleSupplier;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ShootBalls extends CommandBase {
+public class RunIntake extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   private WheelSystem m_subsystem;
-  private boolean XPressed, YPressed, BPressed;
+  private DoubleSupplier speed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootBalls(WheelSystem subsystem, boolean XPressed, boolean YPressed, boolean BPressed) {
+  public RunIntake(WheelSystem subsystem, DoubleSupplier speed) {
     m_subsystem = subsystem;
-    this.XPressed = XPressed;
-    this.YPressed = YPressed;
-    this.BPressed = BPressed;
+    this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -36,15 +35,8 @@ public class ShootBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shootSpeed = 0;
-    if(BPressed) {
-      shootSpeed = Constants.HIGH_SHOOT_SPEED;
-    } else if(YPressed) {
-      shootSpeed = Constants.MEDIUM_SHOOT_SPEED;
-    } else if(XPressed) {
-      shootSpeed = Constants.LOW_SHOOT_SPEED;
-    }
-    m_subsystem.setShooterWheelSpeed(shootSpeed);
+    double adjustedSpeed = speed.getAsDouble() > Constants.RT_DEAD_ZONE ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
+    m_subsystem.setIntakeWheelSpeed(adjustedSpeed);
   }
 
   // Called once the command ends or is interrupted.
