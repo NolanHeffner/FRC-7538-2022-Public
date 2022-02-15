@@ -35,7 +35,7 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double adjustedSpeed = speed.getAsDouble() > Constants.RT_DEAD_ZONE ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
+    double adjustedSpeed = speed.getAsDouble() > Constants.RT_DEADBAND ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
     m_subsystem.setIntakeWheelSpeed(adjustedSpeed);
   }
 

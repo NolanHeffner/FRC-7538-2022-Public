@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.WheelSystem;
 
@@ -16,7 +18,7 @@ public class WheelOperation extends SequentialCommandGroup {
    * @param XPressed,YPressed,BPressed The button presses registered by the ShootBalls command
    * @param rightTrigger Returns the amount of pull on the rightTrigger to determine speed of intake wheel
    */
-  public WheelOperation(WheelSystem subsystem, BooleanSupplier XPressed, BooleanSupplier YPressed, BooleanSupplier BPressed, double rightTrigger) {
+  public WheelOperation(WheelSystem subsystem, BooleanSupplier XPressed, BooleanSupplier YPressed, BooleanSupplier BPressed, DoubleSupplier rightTrigger) {
     addCommands(
         // Shoot the balls depending on XYB-presses
         new ShootBalls(
@@ -25,6 +27,6 @@ public class WheelOperation extends SequentialCommandGroup {
             YPressed,
             BPressed),
         // Run intake depending on how far the right trigger is pulled
-        new RunIntake(subsystem, () -> rightTrigger));
+        new RunIntake(subsystem, rightTrigger));
   }
 }
