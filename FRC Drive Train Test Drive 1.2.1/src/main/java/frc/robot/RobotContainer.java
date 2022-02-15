@@ -39,14 +39,14 @@ public class RobotContainer {
   public RobotContainer() {
     m_driveTrain.setDefaultCommand(new WestCoastDrive(
       m_driveTrain,
-      () -> driver.getLeftY(),
-      () -> driver.getRightX()));
+      driver::getLeftY,
+      driver::getRightX));
     m_wheelSystem.setDefaultCommand(new WheelOperation(
       m_wheelSystem,
-      () -> driver.getXButton(),
-      () -> driver.getYButton(),
-      () -> driver.getBButton(),
-      driver.getRightTriggerAxis()));
+      driver::getXButton,
+      driver::getYButton,
+      driver::getBButton,
+      driver::getRightTriggerAxis));
     autoDrive = new AutoDrive(m_driveTrain);
     
     // Configure the button bindings

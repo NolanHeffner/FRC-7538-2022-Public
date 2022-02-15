@@ -37,13 +37,11 @@ public class WestCoastDrive extends CommandBase {
   @Override
   public void execute() {
     // Arcade-style driving; left stick forward/backward for driving speed, right stick left/right for turning
-    // If stick values are outside dead zone, return actual value (scaled for turning); else, return 0
-    double leftStickYAsDouble = Math.abs(leftStickY.getAsDouble()) > Constants.LY_DEAD_ZONE ? leftStickY.getAsDouble() : 0;
-    double rightStickXAsDouble = Math.abs(rightStickX.getAsDouble()) > Constants.RX_DEAD_ZONE ? Constants.TURN_FACTOR * rightStickX.getAsDouble() : 0;
-    // No axes limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
+    double leftStickYAsDouble = deadBand(leftStickY.getAsDouble(), Constants.LY_DEADBAND);
+    double rightStickXAsDouble = deadBand(rightStickX.getAsDouble(), Constants.RX_DEADBAND) * Constants.TURN_FACTOR;
+    // No circular limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
     double leftInput = Constants.SCALING_FACTOR * (leftStickYAsDouble + rightStickXAsDouble);
     double rightInput = Constants.SCALING_FACTOR * (leftStickYAsDouble - rightStickXAsDouble);
-    // double scalingFactor = Constants.MAX_DRIVE_SPEED / Math.min(leftInput,rightInput);
     m_subsystem.setMotors(leftInput, rightInput);
   }
 
@@ -57,5 +55,17 @@ public class WestCoastDrive extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public double deadBand(double speed, double deadBand) {
+    // Sets speeds to 0 if within deadband
+    double newSpeed = Math.abs(speed) > deadBand ? speed : 0;
+    // If speed is 0, always return 0; prevents div by 0 error
+    if(speed == 0) {
+      return 0;
+    }
+    // Dilate to use whole range of speeds
+    double sign = newSpeed / Math.abs(newSpeed);
+    return (speed - sign * deadBand) / (1 - deadBand);
   }
 }

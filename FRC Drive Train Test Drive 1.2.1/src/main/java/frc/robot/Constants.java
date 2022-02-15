@@ -53,7 +53,7 @@ public final class Constants {
     public static double HIGH_SHOOT_SPEED = 1;
 
     // Dead zones
-    public static double LY_DEAD_ZONE, RX_DEAD_ZONE, RT_DEAD_ZONE = 0.15; // RT = Right trigger
+    public static double LY_DEADBAND, RX_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger
 
     // Drive train config
     public static double MAX_DRIVE_SPEED = 0.3;
