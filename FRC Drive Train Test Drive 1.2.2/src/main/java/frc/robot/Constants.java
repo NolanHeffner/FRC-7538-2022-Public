@@ -56,9 +56,9 @@ public final class Constants {
     public static double LY_DEADBAND, RX_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger
 
     // Drive train config
-    public static double MAX_DRIVE_SPEED = 0.3;
-    public static double TURN_FACTOR = 0.7;
-    public static double SCALING_FACTOR = 1 / (1 + TURN_FACTOR);
+    public static double MAX_DRIVE_SPEED = 0.4;
+    public static double TURN_FACTOR = 0.8;
+    public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 
     // Wheel system config
     public static double MAX_INTAKE_SPEED = 0.4;
