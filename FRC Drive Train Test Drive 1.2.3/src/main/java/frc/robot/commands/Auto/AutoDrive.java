@@ -2,32 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Auto;
 
-import frc.robot.subsystems.WheelSystem;
-import java.util.function.BooleanSupplier;
+import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 
 /** An example command that uses an example subsystem. */
-public class ShootBalls extends CommandBase {
+public class AutoDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  
-  private WheelSystem m_subsystem;
-  private BooleanSupplier XPressed;
-  private BooleanSupplier YPressed;
-  private BooleanSupplier BPressed;
+  private final DriveTrain m_subsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootBalls(WheelSystem subsystem, BooleanSupplier XPressed, BooleanSupplier YPressed, BooleanSupplier BPressed) {
+  public AutoDrive(DriveTrain subsystem) {
     m_subsystem = subsystem;
-    this.XPressed = XPressed;
-    this.YPressed = YPressed;
-    this.BPressed = BPressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -39,21 +30,13 @@ public class ShootBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shootSpeed = 0;
-    if (BPressed.getAsBoolean()) {
-      shootSpeed = Constants.HIGH_SHOOT_SPEED;
-    } else if (YPressed.getAsBoolean()) {
-      shootSpeed = Constants.MEDIUM_SHOOT_SPEED;
-    } else if (XPressed.getAsBoolean()) {
-      shootSpeed = Constants.LOW_SHOOT_SPEED;
-    }
-    m_subsystem.setShooterWheelSpeed(shootSpeed);
+    m_subsystem.arcadeDrive(0, 0.75);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setShooterWheelSpeed(0);
+    m_subsystem.setMotors(0,0);
   }
 
   // Returns true when the command should end.
