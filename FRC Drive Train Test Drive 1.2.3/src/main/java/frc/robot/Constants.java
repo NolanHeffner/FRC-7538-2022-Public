@@ -47,19 +47,16 @@ public final class Constants {
     public static int SHOOTER_WHEEL_PORT = 5;
     
     // Wheel speeds
-    public static double INTAKE_SPEED = 0.5;
-    public static double LOW_SHOOT_SPEED = 0.3;
-    public static double MEDIUM_SHOOT_SPEED = 0.6;
-    public static double HIGH_SHOOT_SPEED = 1;
-
-    // Dead zones
-    public static double LY_DEADBAND, RX_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger
+    public static double FEED_SPEED = 0.4;
+    public static double MAX_INTAKE_SPEED = 0.5;
+    public static double DEFAULT_SHOOT_SPEED = 0.75;
 
     // Drive train config
     public static double MAX_DRIVE_SPEED = 0.4;
+    public static double TIME_TO_MAX_SPEED = 0.15;
     public static double TURN_FACTOR = 0.8;
     public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 
-    // Wheel system config
-    public static double MAX_INTAKE_SPEED = 0.4;
+    // Dead zones
+    public static double LY_DEADBAND, RX_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger
 }

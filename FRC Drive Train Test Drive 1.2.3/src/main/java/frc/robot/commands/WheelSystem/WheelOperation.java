@@ -2,11 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.WheelSystem;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.WheelSystem;
 
@@ -18,14 +16,10 @@ public class WheelOperation extends SequentialCommandGroup {
    * @param XPressed,YPressed,BPressed The button presses registered by the ShootBalls command
    * @param rightTrigger Returns the amount of pull on the rightTrigger to determine speed of intake wheel
    */
-  public WheelOperation(WheelSystem subsystem, BooleanSupplier XPressed, BooleanSupplier YPressed, BooleanSupplier BPressed, DoubleSupplier rightTrigger) {
+  public WheelOperation(WheelSystem subsystem, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
     addCommands(
         // Shoot the balls depending on XYB-presses
-        new ShootBalls(
-            subsystem,
-            XPressed,
-            YPressed,
-            BPressed),
+        new ShootBalls(subsystem,leftTrigger),
         // Run intake depending on how far the right trigger is pulled
         new RunIntake(subsystem, rightTrigger));
   }
