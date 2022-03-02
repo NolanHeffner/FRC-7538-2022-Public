@@ -13,5 +13,8 @@ The other project folder is MotorTest, which is a really basic Motor subsystem h
 ## Plans for future iterations of the code
 In future years we hope to incorporate encoders, kinematics, and odometry into our robot hardware and control for greater precision in autonomous mode. We're slowly recovering from COVID-19's pernicious effects on education, but it'll be a while before we attempt anything really advanced.
 
+## Further notes
+We're so bored, we've had nothing to do for weeks now, Nolan keeps just adding random potato-code to keep busy... at least people say it drives nice
+
 ## Contributors:
 Nolan Heffner, Emma, Jessica Gay (former), Anthony, Spencer, Abdou Senghore, Jabel Senghore, and Micah
