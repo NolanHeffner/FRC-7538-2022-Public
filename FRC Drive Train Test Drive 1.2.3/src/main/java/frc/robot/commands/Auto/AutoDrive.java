@@ -30,12 +30,14 @@ public class AutoDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.arcadeDrive(0, 0.75);
+    // drive DONUTTSSSSSSSS
+    m_subsystem.arcadeDrive(0.25, 0.75);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // Emergency stop of motors if something goes wrong in the code
     m_subsystem.setMotors(0,0);
   }
 

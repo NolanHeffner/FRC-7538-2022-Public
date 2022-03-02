@@ -6,7 +6,7 @@ package frc.robot.commands.WheelSystem;
 
 import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
@@ -14,6 +14,7 @@ import frc.robot.Constants;
 public class ShootBalls extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
+  // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
   private WheelSystem m_subsystem;
   private DoubleSupplier rightTriggerDepression;
 
@@ -23,6 +24,7 @@ public class ShootBalls extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public ShootBalls(WheelSystem subsystem, DoubleSupplier rightTriggerDepression) {
+    // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
     this.rightTriggerDepression = rightTriggerDepression;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,9 +38,11 @@ public class ShootBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // If the rightTrigger value depressed beyond the deadband, it returns that the ball shooter should run
     boolean rightTriggerDepressed = Math.abs(rightTriggerDepression.getAsDouble()) > Constants.RT_DEADBAND ? true : false;
-    double shootSpeed = rightTriggerDepressed ? SmartDashboard.getNumber("Shooter Wheel Speed", Constants.DEFAULT_SHOOT_SPEED) : 0;
-    System.out.println(shootSpeed);
+    // Sets speed of shooter wheel motor to correct speed
+    // double shootSpeed = rightTriggerDepressed ? SmartDashboard.getNumber("Shooter Wheel Speed", Constants.DEFAULT_SHOOT_SPEED) : 0;
+    double shootSpeed = rightTriggerDepressed ? Constants.DEFAULT_SHOOT_SPEED : 0;
     m_subsystem.setShooterWheelSpeed(shootSpeed);
   }
 

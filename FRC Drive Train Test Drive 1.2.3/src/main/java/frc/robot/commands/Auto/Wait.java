@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Wait extends CommandBase {
 
+  // Instantiates required subsystem and also timer variables that keep track of how long the subsystem has waited
   SubsystemBase m_subsystem;
   long m_startTime;
   long m_currentTime;
@@ -28,6 +29,7 @@ public class Wait extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // Sets the start time to the system time at the time the command was scheduled
     m_currentTime = System.currentTimeMillis();
     m_startTime = m_currentTime;
   }
@@ -35,6 +37,7 @@ public class Wait extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Updates current time every execution of the command
     m_currentTime = System.currentTimeMillis();
   }
 
@@ -46,6 +49,7 @@ public class Wait extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Command only finishes execution when the change in system time (aka time waited) exceeds the required wait time
     return (m_currentTime - m_startTime) >= m_waitTime;
   }
 }

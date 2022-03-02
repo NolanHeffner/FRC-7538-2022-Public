@@ -13,14 +13,17 @@ import frc.robot.Constants;
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
+  // Instantiates motors that subsystem controls to link code to CAN bus
   WPI_TalonFX leftA = new WPI_TalonFX(Constants.LEFT_1_PORT);
   WPI_TalonFX leftB = new WPI_TalonFX(Constants.LEFT_2_PORT);
   WPI_TalonFX rightA = new WPI_TalonFX(Constants.RIGHT_1_PORT);
   WPI_TalonFX rightB = new WPI_TalonFX(Constants.RIGHT_2_PORT);
+  // Creates slew rate limiters in case we decide to limit acceleration for motor protection
   SlewRateLimiter leftInputLimiter = new SlewRateLimiter(Constants.MAX_DRIVE_SPEED / Constants.TIME_TO_MAX_SPEED);
   SlewRateLimiter rightInputLimiter = new SlewRateLimiter(Constants.MAX_DRIVE_SPEED / Constants.TIME_TO_MAX_SPEED);
 
   public DriveTrain() {
+    // Inverts right motors so that positive inputs move robot forward
     invertRightMotors(true);
   }
 
@@ -37,21 +40,25 @@ public class DriveTrain extends SubsystemBase {
         // No circular limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
         double leftInput = Constants.SCALING_FACTOR * (leftStickY_DB - rightStickX_DB);
         double rightInput = Constants.SCALING_FACTOR * (leftStickY_DB + rightStickX_DB);
+        // Display numbers to SmartDashboard to help inform drivers, especially during troubleshooting tests
         SmartDashboard.putNumber("Left Motor Speeds: ", leftInput);
         SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
-        setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
-  }
+        // Sets motor speeds
+        //setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
+        setMotors(leftInput, rightInput);
+      }
 
   public double deadBand(double speed, double deadBand) {
     // Sets speeds to 0 if within deadband
     if(speed == 0 || Math.abs(speed) < deadBand) {
       return 0;
     }
-    // Dilate to use whole range of speeds
+    // Dilate to use whole range of speeds; obfuscated a lil' bit
     return speed * (1 - deadBand / Math.abs(speed)) / (1 - deadBand);
   }
 
   public void setMotors(double lSpeed, double rSpeed) {
+    // Pushes new speeds to drive train using set() method
     leftA.set(lSpeed);
     leftB.set(lSpeed);
     rightA.set(rSpeed);

@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto.Wait;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.WheelSystem;
-import frc.robot.commands.WheelSystem.WheelOperation;
+// import frc.robot.subsystems.WheelSystem;
+// import frc.robot.commands.WheelSystem.WheelOperation;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,21 +24,24 @@ public class RobotContainer {
   // Create subsystems
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Wait autoDrive;
-  private final WheelSystem m_wheelSystem = new WheelSystem();
+  // private final WheelSystem m_wheelSystem = new WheelSystem();
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
 
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
+    // We use method reference with object::method so command scheduler can constantly update controller values to commands in background
     m_driveTrain.setDefaultCommand(new WestCoastDrive(
       m_driveTrain,
       driver::getLeftY,
       driver::getRightX));
-    m_wheelSystem.setDefaultCommand(new WheelOperation(
+    // Wheel subsystem is currently not built in robot so we keep the robot from thinking there are motors that don't exist
+    /*m_wheelSystem.setDefaultCommand(new WheelOperation(
       m_wheelSystem,
       driver::getLeftTriggerAxis,
-      driver::getRightTriggerAxis));
+      driver::getRightTriggerAxis));*/
+    // Autonomous mode is currently the robot going 'huh, guess i'll wait a bajillion seconds'
     autoDrive = new Wait(m_driveTrain, 10000);
     // Configure the button bindings
     configureButtonBindings();

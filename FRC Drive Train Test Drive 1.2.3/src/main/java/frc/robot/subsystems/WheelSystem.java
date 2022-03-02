@@ -11,15 +11,20 @@ import frc.robot.Constants;
 
 public class WheelSystem extends SubsystemBase {
 
+  // Instantiates wheels to using port maps to connect code to Roborio
   PWMVictorSPX intakeWheel = new PWMVictorSPX(Constants.INTAKE_WHEEL_PORT);
   PWMVictorSPX shooterWheel = new PWMVictorSPX(Constants.SHOOTER_WHEEL_PORT);
 
+  // Pushes new speed to intake wheel motor
   public void setIntakeWheelSpeed(double speed) {
+    // Updates intake wheel speed on dashboard
     SmartDashboard.putNumber("Intake Speed", speed);
     intakeWheel.set(speed);
   }
 
+  // Pushes new speed to intake wheel motor
   public void setShooterWheelSpeed(double speed) {
+    // Updates intake wheel speed on dashboard
     SmartDashboard.putNumber("Shooter Speed", speed);
     shooterWheel.set(speed);
   }

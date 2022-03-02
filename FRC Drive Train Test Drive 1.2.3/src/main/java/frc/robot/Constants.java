@@ -18,14 +18,14 @@ public final class Constants {
     public static int DRIVER_XBOX_PORT = 0;
 
     // Xbox Controller button number template
-    public static int XBOX_LEFT_STICK_X = 0;
-    public static int XBOX_LEFT_STICK_Y = 1;
-    public static int XBOX_LEFT_TRIGGER = 2;
-    public static int XBOX_RIGHT_TRIGGER = 3;
-    public static int XBOX_RIGHT_STICK_X = 4;
+    public static int XBOX_LEFT_STICK_X = 0; 
+    public static int XBOX_LEFT_STICK_Y = 1; // Tank drive forward/backward
+    public static int XBOX_LEFT_TRIGGER = 2; // Intake wheel control
+    public static int XBOX_RIGHT_TRIGGER = 3; // Shooter wheel control
+    public static int XBOX_RIGHT_STICK_X = 4; // Tank drive turning
     public static int XBOX_RIGHT_STICK_Y = 5;
 
-    // Buttons are on a different enumeration
+    // Buttons are on a different enumeration, not currently used by our bot though
     public static int XBOX_A_BUTTON = 1;
     public static int XBOX_B_BUTTON = 2;
     public static int XBOX_X_BUTTON = 3;
@@ -52,11 +52,11 @@ public final class Constants {
     public static double DEFAULT_SHOOT_SPEED = 0.75;
 
     // Drive train config
-    public static double MAX_DRIVE_SPEED = 0.4;
-    public static double TIME_TO_MAX_SPEED = 0.15;
-    public static double TURN_FACTOR = 0.8;
+    public static double MAX_DRIVE_SPEED = 1; // MAX POWAAAAAAA!!!
+    public static double TIME_TO_MAX_SPEED = 0; // Skew limiters begone
+    public static double TURN_FACTOR = 0.6; // Turn influence decreased
     public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 
-    // Dead zones
+    // Dead zones - Sets controller inputs to 0 in a certain range around 0 values to account for stick drift / accidental nudges
     public static double LY_DEADBAND, RX_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger
 }

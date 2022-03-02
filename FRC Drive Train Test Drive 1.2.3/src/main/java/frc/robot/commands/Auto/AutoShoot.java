@@ -10,7 +10,14 @@ import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.subsystems.WheelSystem;
 
+
 public class AutoShoot extends SequentialCommandGroup {
+  /**
+   * Schedules all the necessary commands to automatically shoot a ball
+   * First, gets shooter system up to speed (since motors take a little bit to get to full speed)
+   * Then, uses the intake wheels (where balls are stored since we have no official storage) to feed the balls into the shooter
+   * Finally, turns both off
+   */
   public AutoShoot(WheelSystem wheelSystem) {
     addCommands(
       new ShootBalls(wheelSystem, () -> 1),
