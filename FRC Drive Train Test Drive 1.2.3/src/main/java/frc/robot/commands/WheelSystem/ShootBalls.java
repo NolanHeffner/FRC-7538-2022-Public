@@ -6,9 +6,6 @@ package frc.robot.commands.WheelSystem;
 
 import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
@@ -44,7 +41,6 @@ public class ShootBalls extends CommandBase {
     // Sets speed of shooter wheel motor to correct speed
     // double shootSpeed = rightTriggerDepressed ? SmartDashboard.getNumber("Shooter Wheel Speed", Constants.DEFAULT_SHOOT_SPEED) : 0;
     double shootSpeed = Math.abs(rightTriggerDepression.getAsDouble()) > Constants.RT_DEADBAND ? Constants.DEFAULT_SHOOT_SPEED : 0;
-    SmartDashboard.putNumber("RightTriggerAdj: ", shootSpeed);
     m_subsystem.setShooterWheelSpeed(shootSpeed);
   }
 

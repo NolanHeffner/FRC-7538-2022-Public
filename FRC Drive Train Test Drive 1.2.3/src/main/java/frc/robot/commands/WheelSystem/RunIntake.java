@@ -7,8 +7,6 @@ package frc.robot.commands.WheelSystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -42,7 +40,6 @@ public class RunIntake extends CommandBase {
     // D:<
     // If the speed (directly mapped to leftTriggerDepression) is outside of the deadband, it returns the proportional intake speed
     double intakeSpeed = speed.getAsDouble() > Constants.LT_DEADBAND ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
-    SmartDashboard.putNumber("LeftTriggerAdj: ", intakeSpeed);
     // Sets scaled intake speed to intake wheel motors
     m_subsystem.setIntakeWheelSpeed(-intakeSpeed);
   }
