@@ -4,23 +4,29 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Constants;
 
 public class Motor extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   
-  private final WPI_TalonFX motor1 = new WPI_TalonFX(Constants.MOTOR_PORT_1);
-  private final WPI_TalonFX motor2 = new WPI_TalonFX(Constants.MOTOR_PORT_2);
-  private final WPI_TalonFX motor3 = new WPI_TalonFX(Constants.MOTOR_PORT_3);
-  private final WPI_TalonFX motor4 = new WPI_TalonFX(Constants.MOTOR_PORT_4);
+  private final PWMVictorSPX motor1 = new PWMVictorSPX(Constants.MOTOR_PORT_1);
+  private final PWMVictorSPX motor2 = new PWMVictorSPX(Constants.MOTOR_PORT_2);
+  // private final WPI_TalonFX motor3 = new WPI_TalonFX(Constants.MOTOR_PORT_3);
+  // private final WPI_TalonFX motor4 = new WPI_TalonFX(Constants.MOTOR_PORT_4);
 
-  public void setMotorSpeed(double speed) {
-    motor1.set(speed);
-    motor2.set(speed);
-    motor3.set(speed);
-    motor4.set(speed);
+  public void setMotorSpeed(int motorNumber, double speed) {
+    switch(motorNumber) {
+      case 1:
+        motor1.set(speed);
+        break;
+      case 2:
+        motor2.set(speed);
+        break;
+      default:
+        break;
+    }
   }
 
   @Override

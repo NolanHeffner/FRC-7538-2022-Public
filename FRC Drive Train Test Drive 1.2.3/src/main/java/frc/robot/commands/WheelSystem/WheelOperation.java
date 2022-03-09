@@ -5,11 +5,12 @@
 package frc.robot.commands.WheelSystem;
 
 import java.util.function.DoubleSupplier;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.WheelSystem;
 
 /** A complex auto command that drives forward, releases a hatch, and then drives backward. */
-public class WheelOperation extends SequentialCommandGroup {
+public class WheelOperation extends ParallelCommandGroup {
   /**
    * Creates a new WheelOperation
    * @param subsysten The drive subsystem this command will run on
@@ -18,9 +19,9 @@ public class WheelOperation extends SequentialCommandGroup {
    */
   public WheelOperation(WheelSystem subsystem, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
     addCommands(
-        // Shoot the balls depending on XYB-presses
-        new ShootBalls(subsystem,leftTrigger),
         // Run intake depending on how far the right trigger is pulled
-        new RunIntake(subsystem, rightTrigger));
+        new RunIntake(subsystem, leftTrigger),
+        // Shoot the balls depending on XYB-presses
+        new ShootBalls(subsystem, rightTrigger));
   }
 }

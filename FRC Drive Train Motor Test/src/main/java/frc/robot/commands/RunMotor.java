@@ -39,7 +39,7 @@ public class RunMotor extends CommandBase {
   @Override
   public void execute() {
     DoubleSupplier setSpeed = Math.abs(speed.getAsDouble()) > Constants.LY_DEAD_ZONE ? speed : () -> 0;
-    m_subsystem.setMotorSpeed(Constants.SPEED_CAP * setSpeed.getAsDouble());
+    m_subsystem.setMotorSpeed(1, Constants.SPEED_CAP * setSpeed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

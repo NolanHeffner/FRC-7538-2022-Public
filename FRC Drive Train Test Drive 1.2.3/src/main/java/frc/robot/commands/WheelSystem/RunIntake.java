@@ -7,6 +7,8 @@ package frc.robot.commands.WheelSystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -37,21 +39,23 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // D:<
     // If the speed (directly mapped to leftTriggerDepression) is outside of the deadband, it returns the proportional intake speed
-    double adjustedSpeed = speed.getAsDouble() > Constants.RT_DEADBAND ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
+    double intakeSpeed = speed.getAsDouble() > Constants.LT_DEADBAND ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
+    SmartDashboard.putNumber("LeftTriggerAdj: ", intakeSpeed);
     // Sets scaled intake speed to intake wheel motors
-    m_subsystem.setIntakeWheelSpeed(adjustedSpeed);
+    m_subsystem.setIntakeWheelSpeed(-intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setIntakeWheelSpeed(0);
+    //m_subsystem.setIntakeWheelSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

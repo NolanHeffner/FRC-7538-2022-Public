@@ -21,8 +21,8 @@ public final class Constants {
     public static int XBOX_A_BUTTON = 1;
 
     // Motor ports - arbitrary for now, probably will be 0 thru 7 when the robot is done tho
-    public static int MOTOR_PORT_1 = 0;
-    public static int MOTOR_PORT_2 = 0;
+    public static int MOTOR_PORT_1 = 5;
+    public static int MOTOR_PORT_2 = 6;
     public static int MOTOR_PORT_3 = 0;
     public static int MOTOR_PORT_4 = 0;
     

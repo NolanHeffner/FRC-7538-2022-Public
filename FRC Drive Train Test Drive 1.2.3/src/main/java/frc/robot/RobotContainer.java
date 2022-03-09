@@ -6,12 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto.Wait;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.subsystems.DriveTrain;
-// import frc.robot.subsystems.WheelSystem;
-// import frc.robot.commands.WheelSystem.WheelOperation;
+import frc.robot.subsystems.WheelSystem;
+import frc.robot.commands.WheelSystem.RunIntake;
+import frc.robot.commands.WheelSystem.ShootBalls;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,8 +25,8 @@ public class RobotContainer {
 
   // Create subsystems
   private final DriveTrain m_driveTrain = new DriveTrain();
+  private final WheelSystem m_wheelSystem = new WheelSystem();
   private final Wait autoDrive;
-  // private final WheelSystem m_wheelSystem = new WheelSystem();
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
@@ -41,6 +43,11 @@ public class RobotContainer {
       m_wheelSystem,
       driver::getLeftTriggerAxis,
       driver::getRightTriggerAxis));*/
+    m_wheelSystem.setDefaultCommand(
+      new SequentialCommandGroup(
+        new RunIntake(m_wheelSystem, driver::getLeftTriggerAxis),
+        new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
+    // m_wheelSystem.setDefaultCommand(new ShootBalls(m_wheelSystem, () -> 0.4));
     // Autonomous mode is currently the robot going 'huh, guess i'll wait a bajillion seconds'
     autoDrive = new Wait(m_driveTrain, 10000);
     // Configure the button bindings

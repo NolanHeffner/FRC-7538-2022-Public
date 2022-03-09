@@ -6,6 +6,8 @@ package frc.robot.commands.WheelSystem;
 
 import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -39,22 +41,22 @@ public class ShootBalls extends CommandBase {
   @Override
   public void execute() {
     // If the rightTrigger value depressed beyond the deadband, it returns that the ball shooter should run
-    boolean rightTriggerDepressed = Math.abs(rightTriggerDepression.getAsDouble()) > Constants.RT_DEADBAND ? true : false;
     // Sets speed of shooter wheel motor to correct speed
     // double shootSpeed = rightTriggerDepressed ? SmartDashboard.getNumber("Shooter Wheel Speed", Constants.DEFAULT_SHOOT_SPEED) : 0;
-    double shootSpeed = rightTriggerDepressed ? Constants.DEFAULT_SHOOT_SPEED : 0;
+    double shootSpeed = Math.abs(rightTriggerDepression.getAsDouble()) > Constants.RT_DEADBAND ? Constants.DEFAULT_SHOOT_SPEED : 0;
+    SmartDashboard.putNumber("RightTriggerAdj: ", shootSpeed);
     m_subsystem.setShooterWheelSpeed(shootSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setShooterWheelSpeed(0);
+    //m_subsystem.setShooterWheelSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
