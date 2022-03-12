@@ -9,7 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class RunIntake extends CommandBase {
+public class RunShooter extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
@@ -21,7 +21,7 @@ public class RunIntake extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RunIntake(WheelSystem subsystem, DoubleSupplier speed) {
+  public RunShooter(WheelSystem subsystem, DoubleSupplier speed) {
     // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
     this.speed = speed;
@@ -36,7 +36,7 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setIntakeWheelSpeed(-speed.getAsDouble());
+    m_subsystem.setShooterWheelSpeed(speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
