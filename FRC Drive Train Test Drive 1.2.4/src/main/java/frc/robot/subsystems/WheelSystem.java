@@ -20,14 +20,14 @@ public class WheelSystem extends SubsystemBase {
   // Pushes new speed to intake wheel motor
   public void setIntakeWheelSpeed(double speed) {
     // Updates intake wheel speed on dashboard
-    SmartDashboard.putNumber("Intake Speed", speed);
+    SmartDashboard.putNumber("Intake Speed: ", speed);
     intakeWheel.set(ControlMode.PercentOutput, speed);
   }
 
   // Pushes new speed to intake wheel motor
   public void setShooterWheelSpeed(double speed) {
     // Updates intake wheel speed on dashboard
-    SmartDashboard.putNumber("Shooter Speed", speed);
+    SmartDashboard.putNumber("Shooter Speed: ", speed);
     shooterWheel.set(ControlMode.PercentOutput, speed);
   }
 

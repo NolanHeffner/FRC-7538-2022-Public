@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AutoDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_subsystem;
+  private double lSpeed, rSpeed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoDrive(DriveTrain subsystem) {
+  public AutoDrive(DriveTrain subsystem, double lSpeed, double rSpeed) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -31,7 +32,7 @@ public class AutoDrive extends CommandBase {
   @Override
   public void execute() {
     // drive DONUTTSSSSSSSS
-    m_subsystem.arcadeDrive(0.25, 0.75);
+    m_subsystem.arcadeDrive(lSpeed, rSpeed);
   }
 
   // Called once the command ends or is interrupted.

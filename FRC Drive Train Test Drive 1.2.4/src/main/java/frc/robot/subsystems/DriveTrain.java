@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Constants;
+import frc.robot.filters.AdjustableSlewRateLimiter;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -18,13 +21,21 @@ public class DriveTrain extends SubsystemBase {
   WPI_TalonFX leftB = new WPI_TalonFX(Constants.LEFT_2_PORT);
   WPI_TalonFX rightA = new WPI_TalonFX(Constants.RIGHT_1_PORT);
   WPI_TalonFX rightB = new WPI_TalonFX(Constants.RIGHT_2_PORT);
+
+  // Create chooser for accel limiting
+  SendableChooser<Double> m_limit_chooser = new SendableChooser<>();
+  double accelLimit = 0;
+
   // Creates slew rate limiters in case we decide to limit acceleration for motor protection
-  SlewRateLimiter leftInputLimiter = new SlewRateLimiter(Constants.MAX_DRIVE_SPEED / Constants.TIME_TO_MAX_SPEED);
-  SlewRateLimiter rightInputLimiter = new SlewRateLimiter(Constants.MAX_DRIVE_SPEED / Constants.TIME_TO_MAX_SPEED);
+  AdjustableSlewRateLimiter leftInputLimiter = new AdjustableSlewRateLimiter(accelLimit);
+  AdjustableSlewRateLimiter rightInputLimiter = new AdjustableSlewRateLimiter(accelLimit);
 
   public DriveTrain() {
     // Inverts right motors so that positive inputs move robot forward
     invertRightMotors(true);
+
+    m_limit_chooser.setDefaultOption("No limit", (double) 0);
+    m_limit_chooser.addOption("Limited", (double) Constants.MAX_DRIVE_SPEED / Constants.TIME_TO_MAX_SPEED);
   }
 
   public void invertRightMotors(boolean isInverted) {
@@ -45,7 +56,11 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
         // Sets motor speeds
         //setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
-        setMotors(leftInput, rightInput);
+        accelLimit = m_limit_chooser.getSelected();
+        leftInputLimiter.setRateLimit(accelLimit);
+        rightInputLimiter.setRateLimit(accelLimit);
+        // leftInputLimiter.setRateLimit(SmartDashboard.getNumber("", defaultValue));
+        setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
       }
 
   public double deadBand(double speed, double deadBand) {
@@ -63,6 +78,26 @@ public class DriveTrain extends SubsystemBase {
     leftB.set(lSpeed);
     rightA.set(rSpeed);
     rightB.set(rSpeed);
+  }
+
+  public enum Mode {
+    COAST,
+    BRAKE
+  }
+
+  public void setMode(Mode mode) {
+    switch(mode) {
+      case COAST:
+        leftA.setNeutralMode(NeutralMode.Coast);
+        leftB.setNeutralMode(NeutralMode.Coast);
+        rightA.setNeutralMode(NeutralMode.Coast);
+        rightB.setNeutralMode(NeutralMode.Coast);
+      case BRAKE:
+        leftA.setNeutralMode(NeutralMode.Brake);
+        leftB.setNeutralMode(NeutralMode.Brake);
+        rightA.setNeutralMode(NeutralMode.Brake);
+        rightB.setNeutralMode(NeutralMode.Brake);
+    }
   }
 
   @Override

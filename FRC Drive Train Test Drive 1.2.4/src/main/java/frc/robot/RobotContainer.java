@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.WestCoastDrive;
-import frc.robot.commands.Auto.Wait;
+import frc.robot.commands.Auto.Autonomous;
 
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.IntakeBalls;
-import frc.robot.commands.WheelSystem.RunShooter;
+// import frc.robot.commands.WheelSystem.RunShooter;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
@@ -35,7 +35,7 @@ public class RobotContainer {
   // Create subsystems
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final WheelSystem m_wheelSystem = new WheelSystem();
-  private final Wait autoDrive;
+  private final Autonomous autoCommand;
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
@@ -58,7 +58,7 @@ public class RobotContainer {
         driver::getRightTriggerAxis));*/
     // m_wheelSystem.setDefaultCommand(new ShootBalls(m_wheelSystem, () -> 0.4));
     // Autonomous mode is currently the robot going 'huh, guess i'll wait a bajillion seconds'
-    autoDrive = new Wait(m_driveTrain, 10000);
+    autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -75,14 +75,14 @@ public class RobotContainer {
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
-    JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
+    // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
 
     // Link buttons to commands
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, () -> -0.3));
-    xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -0.3));
+    // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -0.3)); // Does not work lol bc shooter is so jank
   }
 
   /**
@@ -92,6 +92,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoDrive;
+    return autoCommand;
   }
 }
