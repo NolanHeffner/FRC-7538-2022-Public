@@ -56,6 +56,7 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
         // Sets motor speeds
         //setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
+        // Update acceleration limit to option selected on SmartDashboard
         accelLimit = m_limit_chooser.getSelected();
         leftInputLimiter.setRateLimit(accelLimit);
         rightInputLimiter.setRateLimit(accelLimit);
