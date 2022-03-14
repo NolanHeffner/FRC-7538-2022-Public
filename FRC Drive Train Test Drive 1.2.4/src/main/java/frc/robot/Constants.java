@@ -47,12 +47,12 @@ public final class Constants {
     
     // Wheel speeds
     public static double FEED_SPEED = 0.7; // Speed at which intake wheel feeds to shooter wheel
-    public static double MAX_INTAKE_SPEED = 0.65;
+    public static double MAX_INTAKE_SPEED = 0.575;
     public static double DEFAULT_SHOOT_SPEED = 0.6;
 
     // Drive train config
     public static double MAX_DRIVE_SPEED = 0.9; // MAX POWAAAAAAA!!!
-    public static double TIME_TO_MAX_SPEED = 0; // Skew limiters begone
+    public static double TIME_TO_MAX_SPEED = 0.2; // Skew limiters begone
     public static double TURN_FACTOR = 0.6; // Turn influence decreased
     public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 

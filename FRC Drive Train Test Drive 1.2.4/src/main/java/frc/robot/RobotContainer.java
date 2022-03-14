@@ -74,15 +74,15 @@ public class RobotContainer {
     // JoystickButton joystickButton1 = new JoystickButton(driver1, Constants.JOYSTICK_AUXILIARY_BUTTON_1);
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
-    JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
-    // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
+    JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
+    // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
 
     // Link buttons to commands
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, () -> -0.3));
-    // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -0.3)); // Does not work lol bc shooter is so jank
+    // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -2)); // Does not work lol bc shooter is so jank
   }
 
   /**
