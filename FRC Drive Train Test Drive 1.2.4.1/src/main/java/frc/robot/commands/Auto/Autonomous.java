@@ -7,7 +7,6 @@ package frc.robot.commands.Auto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.WheelSystem;
-import frc.robot.subsystems.DriveTrain.Mode;
 
 
 public class Autonomous extends SequentialCommandGroup {
@@ -19,10 +18,8 @@ public class Autonomous extends SequentialCommandGroup {
    * Finally, turns all off
    */
   public Autonomous(DriveTrain driveTrain, WheelSystem wheelSystem) {
-    driveTrain.setMode(Mode.BRAKE);
     addCommands(
       new AutoDrive(driveTrain, -3), // Drive 3 meters back
       new AutoShoot(wheelSystem));
-    driveTrain.setMode(Mode.COAST);
   }
 }
