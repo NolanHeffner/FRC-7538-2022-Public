@@ -2,30 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.WheelSystem;
 
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.Constants;
+import frc.robot.subsystems.WheelSystem;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class WestCoastDrive extends CommandBase {
+public class IntakeBalls extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to drive subsystem
-  private DriveTrain m_subsystem;
-  private DoubleSupplier leftStickY, rightStickX;
+  // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
+  private WheelSystem m_subsystem;
+  private DoubleSupplier speed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX) {
+  public IntakeBalls(WheelSystem subsystem, DoubleSupplier leftTriggerDepression) {
     // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
-    this.leftStickY = leftStickY;
-    this.rightStickX = rightStickX;
+    this.speed = leftTriggerDepression;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -37,20 +37,22 @@ public class WestCoastDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Calls the custom arcadeDrive method which converts stick axes values to motor inputs in DriveTrain.java
-    m_subsystem.arcadeDrive(leftStickY.getAsDouble(), rightStickX.getAsDouble());
+    // D:<
+    // If the speed (directly mapped to leftTriggerDepression) is outside of the deadband, it returns the proportional intake speed
+    double intakeSpeed = speed.getAsDouble() > Constants.LT_DEADBAND ? speed.getAsDouble() * Constants.MAX_INTAKE_SPEED : 0;
+    // Sets scaled intake speed to intake wheel motors
+    m_subsystem.setIntakeWheelSpeed(intakeSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Emergency stop of motors if something goes wrong in the code
-    m_subsystem.setMotors(0, 0);
+    //m_subsystem.setIntakeWheelSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

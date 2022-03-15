@@ -14,8 +14,12 @@ public class WheelSystem extends SubsystemBase {
 
   // Instantiates wheels to using port maps to connect code to Roborio
 
-  VictorSPX intakeWheel = new VictorSPX(Constants.INTAKE_WHEEL_PORT);
-  VictorSPX shooterWheel = new VictorSPX(Constants.SHOOTER_WHEEL_PORT);
+  VictorSPX intakeWheel = new VictorSPX(Constants.INTAKE_WHEEL_CAN_ID);
+  VictorSPX shooterWheel = new VictorSPX(Constants.SHOOTER_WHEEL_CAN_ID);
+
+  public WheelSystem() {
+    intakeWheel.setInverted(true);
+  }
 
   // Pushes new speed to intake wheel motor
   public void setIntakeWheelSpeed(double speed) {

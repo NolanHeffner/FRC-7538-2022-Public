@@ -15,8 +15,6 @@ public class Wait extends CommandBase {
   long m_startTime;
   long m_currentTime;
   long m_waitTime;
-  long m_differential;
-  int counter  = 0;
   boolean isFinished = false;
 
   /**
@@ -42,8 +40,8 @@ public class Wait extends CommandBase {
   public void execute() {
     // Updates current time every execution of the command
     m_currentTime = System.currentTimeMillis();
-    m_differential = m_currentTime - m_startTime;
-    SmartDashboard.putNumber("Time Differential: ", (double) m_differential);
+    long m_differential = m_currentTime - m_startTime;
+    SmartDashboard.putNumber("Time Differential (Subsystem = " + m_subsystem.getClass().getName() + "): ", (double) m_differential);
     isFinished = m_differential >= m_waitTime;
   }
 

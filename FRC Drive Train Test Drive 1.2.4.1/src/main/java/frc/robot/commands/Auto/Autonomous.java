@@ -21,10 +21,7 @@ public class Autonomous extends SequentialCommandGroup {
   public Autonomous(DriveTrain driveTrain, WheelSystem wheelSystem) {
     driveTrain.setMode(Mode.BRAKE);
     addCommands(
-      new AutoDrive(driveTrain, -0.5, -0.5),
-      new Wait(driveTrain, 600),
-      new AutoDrive(driveTrain, 0, 0),
-      new Wait(driveTrain, 400),
+      new AutoDrive(driveTrain, -3), // Drive 3 meters back
       new AutoShoot(wheelSystem));
     driveTrain.setMode(Mode.COAST);
   }

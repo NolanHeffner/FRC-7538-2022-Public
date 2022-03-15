@@ -38,12 +38,12 @@ public final class Constants {
     public static int XBOX_RIGHT_STICK_BUTTON = 10;
 
     // Motor ports
-    public static int LEFT_1_PORT = 1;
-    public static int LEFT_2_PORT = 2;
-    public static int RIGHT_1_PORT = 3;
-    public static int RIGHT_2_PORT = 4;
-    public static int SHOOTER_WHEEL_PORT = 5;
-    public static int INTAKE_WHEEL_PORT = 6;
+    public static int LEFT_1_CAN_ID = 1;
+    public static int LEFT_2_CAN_ID = 2;
+    public static int RIGHT_1_CAN_ID = 3;
+    public static int RIGHT_2_CAN_ID = 4;
+    public static int SHOOTER_WHEEL_CAN_ID = 5;
+    public static int INTAKE_WHEEL_CAN_ID = 6;
     
     // Wheel speeds
     public static double FEED_SPEED = 0.7; // Speed at which intake wheel feeds to shooter wheel
@@ -52,9 +52,23 @@ public final class Constants {
 
     // Drive train config
     public static double MAX_DRIVE_SPEED = 0.9; // MAX POWAAAAAAA!!!
-    public static double TIME_TO_MAX_SPEED = 0.2; // Skew limiters begone
+    public static double DRIVE_TRAIN_RATE_LIMIT = 0.6; // Skew limiters begone
     public static double TURN_FACTOR = 0.6; // Turn influence decreased
     public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
+
+    public static double RAW_SENSOR_UNITS_TO_METERS = 0.1;
+
+    public static double kDriveP = 0;
+    public static double kDriveI = 0;
+    public static double kDriveD = 0;
+    public static double kDrivePTol = RAW_SENSOR_UNITS_TO_METERS;
+    public static double kDriveDTol = RAW_SENSOR_UNITS_TO_METERS;
+
+    public static double kTurnP = 0;
+    public static double kTurnI = 0;
+    public static double kTurnD = 0;
+    public static double kTurnPTol = 0;
+    public static double kTurnDTol = 0;
 
     // Dead zones - Sets controller inputs to 0 in a certain range around 0 values to account for stick drift / accidental nudges
     public static double LY_DEADBAND, RX_DEADBAND, LT_DEADBAND, RT_DEADBAND = 0.15; // RT = Right trigger

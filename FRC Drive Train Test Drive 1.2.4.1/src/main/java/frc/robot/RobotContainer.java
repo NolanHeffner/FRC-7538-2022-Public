@@ -19,7 +19,7 @@ import frc.robot.commands.Auto.Autonomous;
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.IntakeBalls;
-// import frc.robot.commands.WheelSystem.RunShooter;
+// import frc.robot.commands.WheelSystem.RunShooter; // Won't be uncommented unless we recalibrate T5
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
@@ -42,24 +42,15 @@ public class RobotContainer {
 
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
-    // We use method reference with object::method so command scheduler can constantly update controller values to commands in background
     m_driveTrain.setDefaultCommand(new WestCoastDrive(
       m_driveTrain,
       driver::getLeftY,
       driver::getRightX));
-    // Wheel subsystem is currently not built in robot so we keep the robot from thinking there are motors that don't exist
     m_wheelSystem.setDefaultCommand(
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
-    /*m_wheelSystem.setDefaultCommand(new WheelOperation(
-        m_wheelSystem,
-        driver::getLeftTriggerAxis,
-        driver::getRightTriggerAxis));*/
-    // m_wheelSystem.setDefaultCommand(new ShootBalls(m_wheelSystem, () -> 0.4));
-    // Autonomous mode is currently the robot going 'huh, guess i'll wait a bajillion seconds'
     autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
-    // Configure the button bindings
     configureButtonBindings();
   }
 
@@ -81,7 +72,7 @@ public class RobotContainer {
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
-    xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, () -> -0.3));
+    xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
     // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -2)); // Does not work lol bc shooter is so jank
   }
 

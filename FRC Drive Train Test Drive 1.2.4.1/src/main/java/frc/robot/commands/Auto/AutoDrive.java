@@ -4,21 +4,35 @@
 
 package frc.robot.commands.Auto;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /** An example command that uses an example subsystem. */
-public class AutoDrive extends CommandBase {
+public class AutoDrive extends PIDCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_subsystem;
-  private double lSpeed, rSpeed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoDrive(DriveTrain subsystem, double lSpeed, double rSpeed) {
+  public AutoDrive(DriveTrain subsystem, double distance) {
+    super(
+      new PIDController(Constants.kDriveP, Constants.kDriveI, Constants.kDriveD),
+      // Close loop on heading
+      subsystem::getEncoderPosition,
+      // Set reference to target
+      distance,
+      // Pipe output to turn robot
+      output -> subsystem.arcadeDrive(output, 0),
+      // Require the drive
+      subsystem);
+    getController()
+      .setTolerance(Constants.kDrivePTol, Constants.kDriveDTol);
+
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -26,25 +40,15 @@ public class AutoDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // drive DONUTTSSSSSSSS
-    m_subsystem.arcadeDrive(lSpeed, rSpeed);
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    // Emergency stop of motors if something goes wrong in the code
-    m_subsystem.setMotors(0,0);
+  public void initialize() {
+    m_subsystem.resetEncoders();
+    // m_drivetrain.resetHeading();
+    super.initialize();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }
