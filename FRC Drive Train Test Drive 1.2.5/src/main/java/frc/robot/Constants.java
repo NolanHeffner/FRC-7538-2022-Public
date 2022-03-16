@@ -56,13 +56,16 @@ public final class Constants {
     public static double TURN_FACTOR = 0.6; // Turn influence decreased
     public static double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 
-    public static double RAW_SENSOR_UNITS_TO_METERS = 0.1;
+    public static double RAW_SENSOR_UNITS_TO_METERS = 1.948201497395833e-5; // Roughly 50000 sensor units per meter
+    // 2048 raw units per motor rotation
+    // 3 rotations of motor per wheel rotation
+    // 0.478.. meters per wheel rotation
 
-    public static double kDriveP = 0;
+    public static double kDriveP = 0.95;
     public static double kDriveI = 0;
     public static double kDriveD = 0;
-    public static double kDrivePTol = RAW_SENSOR_UNITS_TO_METERS;
-    public static double kDriveDTol = RAW_SENSOR_UNITS_TO_METERS;
+    public static double kDrivePTol = 0.1;
+    public static double kDriveDTol = 0.1;
 
     public static double kTurnP = 0;
     public static double kTurnI = 0;

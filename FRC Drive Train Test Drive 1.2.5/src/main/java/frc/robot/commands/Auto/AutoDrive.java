@@ -6,7 +6,6 @@ package frc.robot.commands.Auto;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.Mode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
@@ -26,9 +25,11 @@ public class AutoDrive extends PIDCommand {
       // Close loop on heading
       subsystem::getEncoderPosition,
       // Set reference to target
-      distance,
+      -distance,
       // Pipe output to turn robot
-      output -> subsystem.arcadeDrive(output, 0),
+      output -> subsystem.setMotors(
+        Math.min(output, 0.6 * Constants.MAX_DRIVE_SPEED), 
+        Math.min(output, 0.6 * Constants.MAX_DRIVE_SPEED)),
       // Require the drive
       subsystem);
     getController()
@@ -42,7 +43,6 @@ public class AutoDrive extends PIDCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setMode(Mode.BRAKE);
     m_subsystem.resetEncoders();
     // m_drivetrain.resetHeading();
     super.initialize();
@@ -50,9 +50,7 @@ public class AutoDrive extends PIDCommand {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_subsystem.setMode(Mode.COAST);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

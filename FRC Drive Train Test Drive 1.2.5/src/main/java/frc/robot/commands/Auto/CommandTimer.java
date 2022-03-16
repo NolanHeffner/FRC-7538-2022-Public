@@ -15,6 +15,13 @@ public class CommandTimer {
   /**
    * Creates a new WaitCommand.
    */
+
+  public CommandTimer() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_startTime = System.currentTimeMillis();
+    m_waitTime = 1000000;
+  }
+
   public CommandTimer(int milliseconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_startTime = System.currentTimeMillis();
@@ -23,7 +30,7 @@ public class CommandTimer {
 
   public void resetTimer(int milliseconds) {
     m_startTime = System.currentTimeMillis();
-    m_waitTime =  milliseconds;
+    m_waitTime = (long) milliseconds;
   }
 
   public boolean isFinished() {

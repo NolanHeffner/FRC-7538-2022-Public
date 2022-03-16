@@ -12,14 +12,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.Auto.Autonomous;
-
+import frc.robot.commands.DriveTrain.WestCoastDrive;
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
-import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.IntakeBalls;
 // import frc.robot.commands.WheelSystem.RunShooter; // Won't be uncommented unless we recalibrate T5
+import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;

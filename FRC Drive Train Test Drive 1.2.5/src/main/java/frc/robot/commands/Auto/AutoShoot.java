@@ -6,7 +6,8 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.WheelSystem.WheelOperation;
+import frc.robot.commands.WheelSystem.RunIntake;
+import frc.robot.commands.WheelSystem.RunShooter;
 import frc.robot.subsystems.WheelSystem;
 
 
@@ -19,7 +20,14 @@ public class AutoShoot extends SequentialCommandGroup {
    */
   public AutoShoot(WheelSystem wheelSystem) {
     addCommands(
-      new WheelOperation(wheelSystem, 0, Constants.DEFAULT_SHOOT_SPEED, 1000),
-      new WheelOperation(wheelSystem, Constants.FEED_SPEED, Constants.DEFAULT_SHOOT_SPEED, 2500, 0, 0));
+      //new WheelOperation(wheelSystem, 0, Constants.DEFAULT_SHOOT_SPEED, 1000),
+      //new WheelOperation(wheelSystem, Constants.FEED_SPEED, Constants.DEFAULT_SHOOT_SPEED, 2500, 0, 0));
+      new RunShooter(wheelSystem, Constants.DEFAULT_SHOOT_SPEED),
+      new Wait(wheelSystem, 1500),
+      new RunIntake(wheelSystem, Constants.FEED_SPEED),
+      new Wait(wheelSystem, 3500),
+      new RunIntake(wheelSystem, 0),
+      new Wait(wheelSystem, 1000),
+      new RunShooter(wheelSystem, 0));
   }
 }

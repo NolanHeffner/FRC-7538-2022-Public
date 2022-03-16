@@ -51,7 +51,7 @@ public class DriveTrain extends SubsystemBase {
     rightB.setInverted(isInverted);
   }
 
-  public enum Mode {
+  public static enum Mode {
     COAST,
     BRAKE
   }
@@ -127,8 +127,16 @@ public class DriveTrain extends SubsystemBase {
     rightA.setSelectedSensorPosition(0);
   }
 
-  public double getEncoderPosition() { // Not sure how works exactly want to redo
-    return 0.5 * leftA.getSelectedSensorPosition() + 0.5 * rightA.getSelectedSensorPosition();
+  public double getEncoderPosition() { // good enough for forwards / backwards
+    double leftPos = leftA.getSelectedSensorPosition();
+    double rightPos = rightA.getSelectedSensorPosition();
+    SmartDashboard.putNumber("leftEncoder: ", leftPos);
+    SmartDashboard.putNumber("rightEncoder: ", rightPos);
+    double sensorUnitAverage = (leftPos + rightPos) / 2;
+    double ret = sensorUnitAverage * Constants.RAW_SENSOR_UNITS_TO_METERS;
+    SmartDashboard.putNumber("Raw Sensor Units Troubleshooting Test: ", Constants.RAW_SENSOR_UNITS_TO_METERS);
+    SmartDashboard.putNumber("AutoDist: ", ret);
+    return ret;
     // Note: 2048 units per rotation; use gear ratio to find distance travelled per raw sensor unit
   }
 

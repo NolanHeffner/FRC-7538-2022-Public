@@ -14,7 +14,7 @@ public class WheelOperation extends CommandBase {
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
   private WheelSystem m_subsystem;
   private double intakeSpeed, shooterSpeed;
-  private CommandTimer timer;
+  private CommandTimer timer = new CommandTimer();
   private double terminalIntakeSpeed;
   private double terminalShooterSpeed;
 
