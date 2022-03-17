@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -14,14 +17,25 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.Auto.Autonomous;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
+
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.IntakeBalls;
-// import frc.robot.commands.WheelSystem.RunShooter; // Won't be uncommented unless we recalibrate T5
 import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+// All Auto / Trajectory imports
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -81,7 +95,54 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return autoCommand;
+    var autoVoltageConstraint =
+    new DifferentialDriveVoltageConstraint(
+        new SimpleMotorFeedforward(
+          Constants.kVoltsPos,
+          Constants.kVoltsVel,
+          Constants.kVoltsAcc),
+          DriveTrain.kDriveKinematics,
+          10);
+
+    TrajectoryConfig config =
+    new TrajectoryConfig(
+            Constants.MAX_SPEED_IN_METERS_PER_SECOND,
+            Constants.MAX_ACCEL_IN_METERS_PER_SECOND)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveTrain.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint);
+          
+    // An example trajectory to follow.  All units in meters.
+    Trajectory exampleTrajectory =
+    TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        // Pass config
+        config);
+    
+    RamseteCommand ramseteCommand =
+    new RamseteCommand(
+        exampleTrajectory,
+        m_driveTrain::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+          Constants.kVoltsPos,
+          Constants.kVoltsVel,
+          Constants.kVoltsAcc),
+          DriveTrain.kDriveKinematics,
+          m_driveTrain::getWheelSpeeds,
+          new PIDController(Constants.kPDriveVel, 0, 0),
+          new PIDController(Constants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_driveTrain::tankDriveVolts,
+        m_driveTrain);
+
+    // A RamseteCommand will run in autonomous
+    return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
   }
 }

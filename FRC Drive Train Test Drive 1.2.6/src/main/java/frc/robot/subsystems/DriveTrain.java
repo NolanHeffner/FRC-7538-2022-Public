@@ -4,12 +4,18 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import frc.robot.Constants;
 import frc.robot.filters.AdjustableSlewRateLimiter;
 
@@ -21,6 +27,13 @@ public class DriveTrain extends SubsystemBase {
   WPI_TalonFX leftB = new WPI_TalonFX(Constants.LEFT_2_CAN_ID);
   WPI_TalonFX rightA = new WPI_TalonFX(Constants.RIGHT_1_CAN_ID);
   WPI_TalonFX rightB = new WPI_TalonFX(Constants.RIGHT_2_CAN_ID);
+
+  // Instantiates Pigeon 2.0 IMU
+
+  WPI_Pigeon2 pigeonGyro = new WPI_Pigeon2(Constants.PIGEON_CAN_ID);
+  DifferentialDriveOdometry m_odometry;
+  public static DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);
 
   // Create chooser for accel limiting
   SendableChooser<Boolean> m_limit_chooser = new SendableChooser<>();
@@ -44,6 +57,8 @@ public class DriveTrain extends SubsystemBase {
 
     m_limit_chooser.setDefaultOption("No limit", false);
     m_limit_chooser.addOption("Limited", true);
+
+    m_odometry = new DifferentialDriveOdometry(getHeading());
   }
 
   public void invertRightMotors(boolean isInverted) {
@@ -79,29 +94,34 @@ public class DriveTrain extends SubsystemBase {
 
   // Yes, I know I can implement Differential Drive and just use arcadeDrive(frw, rot), I'm just bored plz don't judge
   public void arcadeDrive(double leftStickY, double rightStickX) {
-        // Arcade-style driving; left stick forward/backward for driving speed, right stick left/right for turning
-        double leftStickY_DB = deadBand(leftStickY, Constants.LY_DEADBAND);
-        double rightStickX_DB = deadBand(rightStickX, Constants.RX_DEADBAND) * Constants.TURN_FACTOR;
-        // No circular limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
-        double leftInput = Constants.SCALING_FACTOR * (leftStickY_DB - rightStickX_DB);
-        double rightInput = Constants.SCALING_FACTOR * (leftStickY_DB + rightStickX_DB);
-        // Display numbers to SmartDashboard to help inform drivers, especially during troubleshooting tests
-        SmartDashboard.putNumber("Left Motor Speeds: ", leftInput);
-        SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
-        // Update acceleration limit to option selected on SmartDashboard
-        // leftInputLimiter.setRateLimit(SmartDashboard.getNumber("", defaultValue));
-        if (m_limit_chooser.getSelected() != m_currentChoice) {
-          m_currentChoice = m_limit_chooser.getSelected();
-          leftInputLimiter.reset(leftInput);
-          rightInputLimiter.reset(rightInput);
-        }
-        // Sets motor speeds
-        if (m_limit_chooser.getSelected()) {
-          setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
-        } else {
-          setMotors(leftInput, rightInput);
-        }
-      }
+    // Arcade-style driving; left stick forward/backward for driving speed, right stick left/right for turning
+    double leftStickY_DB = deadBand(leftStickY, Constants.LY_DEADBAND);
+    double rightStickX_DB = deadBand(rightStickX, Constants.RX_DEADBAND) * Constants.TURN_FACTOR;
+    // No circular limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
+    double leftInput = Constants.SCALING_FACTOR * (leftStickY_DB - rightStickX_DB);
+    double rightInput = Constants.SCALING_FACTOR * (leftStickY_DB + rightStickX_DB);
+    // Display numbers to SmartDashboard to help inform drivers, especially during troubleshooting tests
+    SmartDashboard.putNumber("Left Motor Speeds: ", leftInput);
+    SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
+    // Update acceleration limit to option selected on SmartDashboard
+    // leftInputLimiter.setRateLimit(SmartDashboard.getNumber("", defaultValue));
+    if (m_limit_chooser.getSelected() != m_currentChoice) {
+      m_currentChoice = m_limit_chooser.getSelected();
+      leftInputLimiter.reset(leftInput);
+      rightInputLimiter.reset(rightInput);
+    }
+    // Sets motor speeds
+    if (m_limit_chooser.getSelected()) {
+      setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
+    } else {
+      setMotors(leftInput, rightInput);
+    }
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftA.setVoltage(leftVolts);
+    rightA.setVoltage(rightVolts);
+  }
 
   public double deadBand(double speed, double deadBand) {
     // Sets speeds to 0 if within deadband
@@ -127,29 +147,66 @@ public class DriveTrain extends SubsystemBase {
     rightA.setSelectedSensorPosition(0);
   }
 
-  public double getEncoderPosition() { // good enough for forwards / backwards
+  public double getEncoderPosition(WPI_TalonFX talon) {
+    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS;
+  }
+
+  public double getEncoderAverage() { // good enough for forwards / backwards
     double leftPos = leftA.getSelectedSensorPosition();
     double rightPos = rightA.getSelectedSensorPosition();
-    SmartDashboard.putNumber("leftEncoder: ", leftPos);
-    SmartDashboard.putNumber("rightEncoder: ", rightPos);
     double sensorUnitAverage = (leftPos + rightPos) / 2;
     double ret = sensorUnitAverage * Constants.RAW_SENSOR_UNITS_TO_METERS;
-    SmartDashboard.putNumber("Raw Sensor Units Troubleshooting Test: ", Constants.RAW_SENSOR_UNITS_TO_METERS);
+    updateDashboard();
     SmartDashboard.putNumber("AutoDist: ", ret);
     return ret;
     // Note: 2048 units per rotation; use gear ratio to find distance travelled per raw sensor unit
   }
 
-  public void displayTemperatures() {
+  public void updateDashboard() {
+    SmartDashboard.putNumber("leftEncoder (meters): ", leftA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS);
+    SmartDashboard.putNumber("rightEncoder (meters): ", rightA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS);
     SmartDashboard.putNumber("Talon ID1 Temperature: ", leftA.getTemperature());
     SmartDashboard.putNumber("Talon ID2 Temperature: ", leftB.getTemperature());
     SmartDashboard.putNumber("Talon ID3 Temperature: ", rightA.getTemperature());
     SmartDashboard.putNumber("Talon ID4 Temperature: ", rightB.getTemperature());
   }
 
+  /*
+  *   Handles gyro
+  */
+
+  public void resetHeading() {
+    pigeonGyro.reset();
+  }
+
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(pigeonGyro.getAngle());
+  }
+
+  public double getTurnRate() {
+    return -pigeonGyro.getRate();
+  }
+
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, pigeonGyro.getRotation2d());
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+      leftA.getSelectedSensorVelocity() * Constants.RAW_SENSOR_UNITS_TO_METERS, 
+      rightA.getSelectedSensorVelocity() * Constants.RAW_SENSOR_UNITS_TO_METERS);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    m_odometry.update(
+      getHeading(), getEncoderPosition(leftA), getEncoderPosition(rightA));
   }
 
   @Override

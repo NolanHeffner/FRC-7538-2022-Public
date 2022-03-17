@@ -23,7 +23,7 @@ public class AutoDrive extends PIDCommand {
     super(
       new PIDController(Constants.kDriveP, Constants.kDriveI, Constants.kDriveD),
       // Close loop on heading
-      subsystem::getEncoderPosition,
+      subsystem::getEncoderAverage,
       // Set reference to target
       -distance,
       // Pipe output to turn robot
