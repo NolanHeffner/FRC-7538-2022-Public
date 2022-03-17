@@ -4,7 +4,7 @@
 This FIRST Robotics project contains the code for Team 7358's robot for the 2022 FRC competition. It is free to repurpose and modify for yourself, although I'm not sure you would want to. It's in its early stages and is simple as befits our straightforward bot design.
 
 ## What does it do?
-Our primary code is labelled TestDrivevA.B.C; There are two subsystems, the drive train and our intake/shooter system. The drive train operates on an arcadeDrive-esque system and the intake/shooter are controlled using the left and right triggers respectively on the XBox controller we've set up for our driver.
+Our primary code is labelled TestDrive vA.B.C; There are two subsystems, the drive train and our intake/shooter system. The drive train operates on an arcadeDrive-esque system and the intake/shooter are controlled using the left and right triggers respectively on the XBox controller we've set up for our driver.
 
 We don't have the encoders, sensors, gyros, and/or other hardware we would need to use PID control, so our autonomous is pretty jank and barebones. Currently we have not tested anything autonomous-related yet because we're still working on getting the 2022 bot finished - we haven't even tested all TeleOp function yet.
 
