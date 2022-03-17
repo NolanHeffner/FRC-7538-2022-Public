@@ -7,9 +7,8 @@ package frc.robot.commands.Auto;
 public class CommandTimer {
 
   // Instantiates required subsystem and also timer variables that keep track of how long the subsystem has waited
-  static long m_startTime;
-  static long m_waitTime;
-  long m_currentTime;
+  long m_startTime;
+  long m_waitTime;
   boolean isFinished = false;
 
   /**
@@ -35,8 +34,7 @@ public class CommandTimer {
 
   public boolean isFinished() {
     // Updates current time every execution of the command
-    m_currentTime = System.currentTimeMillis();
-    long m_differential = m_currentTime - m_startTime;
-    return m_differential >= m_waitTime;
+    long m_differential = System.currentTimeMillis() - m_startTime; // Amount of time that has passed
+    return m_differential >= m_waitTime; // Allow command to finish if the command has waited the wait time out
   }
 }

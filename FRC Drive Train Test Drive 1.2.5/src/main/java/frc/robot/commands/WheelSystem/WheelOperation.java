@@ -13,52 +13,57 @@ public class WheelOperation extends CommandBase {
   
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
   private WheelSystem m_subsystem;
-  private double intakeSpeed, shooterSpeed;
-  private CommandTimer timer = new CommandTimer();
-  private double terminalIntakeSpeed;
-  private double terminalShooterSpeed;
+  private double m_intakeSpeed, m_shooterSpeed;
+  private CommandTimer m_timer = new CommandTimer();
+  private double m_terminalIntakeSpeed;
+  private double m_terminalShooterSpeed;
+  private int m_milliseconds;
 
   public WheelOperation(WheelSystem subsystem, double intakeSpeed, double shooterSpeed, int milliseconds, double terminalIntakeSpeed, double terminalShooterSpeed) {
     // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
-    this.intakeSpeed = intakeSpeed;
-    this.shooterSpeed = shooterSpeed;
-    this.terminalIntakeSpeed = terminalIntakeSpeed;
-    this.terminalShooterSpeed = terminalShooterSpeed;
-    timer.resetTimer(milliseconds);
+    m_intakeSpeed = intakeSpeed;
+    m_shooterSpeed = shooterSpeed;
+    m_terminalIntakeSpeed = terminalIntakeSpeed;
+    m_terminalShooterSpeed = terminalShooterSpeed;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   public WheelOperation(WheelSystem subsystem, double intakeSpeed, double shooterSpeed, int milliseconds) {
     this(subsystem, intakeSpeed, shooterSpeed, milliseconds, intakeSpeed, shooterSpeed);
+    // Sets terminal speed to mid-command speed so speed persists after command ends
   }
 
   public WheelOperation(WheelSystem subsystem, double intakeSpeed, double shooterSpeed) {
     this(subsystem, intakeSpeed, shooterSpeed, 0, intakeSpeed, shooterSpeed);
+    // Sets time to 0; aka sets to shooter speed and immediately returns as finished
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_timer.resetTimer(m_milliseconds);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setIntakeWheelSpeed(intakeSpeed);
-    m_subsystem.setShooterWheelSpeed(shooterSpeed);
+    m_subsystem.setIntakeWheelSpeed(m_intakeSpeed);
+    m_subsystem.setShooterWheelSpeed(m_shooterSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setIntakeWheelSpeed(terminalIntakeSpeed);
-    m_subsystem.setShooterWheelSpeed(terminalShooterSpeed);
+    m_subsystem.setIntakeWheelSpeed(m_terminalIntakeSpeed);
+    m_subsystem.setShooterWheelSpeed(m_terminalShooterSpeed);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.isFinished();
+    return m_timer.isFinished(); // Likely does not work?
   }
 }
