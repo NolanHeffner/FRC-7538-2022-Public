@@ -11,8 +11,7 @@ We don't have the encoders, sensors, gyros, and/or other hardware we would need 
 ## Plans for future iterations of the code
 In future years we hope to incorporate encoders, kinematics, and odometry into our robot hardware and control for greater precision in autonomous mode. We're slowly recovering from COVID-19's pernicious effects on education, but it'll be a while before we attempt anything really advanced.
 
-## Further notes
-We're so bored, we've had nothing to do for weeks now, Nolan keeps just adding random potato-code to keep busy... at least people say the robot drives nice
+Update: Trying to incorporate limelight & gyros in version 1.2.6... slowly dying. Note to viewers: a lot of the new code has been roughly copied from other sources as a template for our robot; it hasn't been tested, revised, or otherwise adjusted. We don't recommend you copy it or use it as a model...
 
 ## Contributors:
 Nolan Heffner, Emma, Jessica Gay (former), Anthony, Spencer, Abdou Senghore, Jabel Senghore, and Micah
