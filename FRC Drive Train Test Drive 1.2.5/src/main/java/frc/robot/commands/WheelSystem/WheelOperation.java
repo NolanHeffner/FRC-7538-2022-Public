@@ -4,12 +4,12 @@
 
 package frc.robot.commands.WheelSystem;
 
-import frc.robot.commands.Auto.CommandTimer;
-import frc.robot.subsystems.WheelSystem;
+//import frc.robot.commands.Auto.CommandTimer;
+//import frc.robot.subsystems.WheelSystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class WheelOperation extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  /*@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to wheel subsystem
   private WheelSystem m_subsystem;
@@ -60,5 +60,5 @@ public class WheelOperation extends CommandBase {
   @Override
   public boolean isFinished() {
     return timer.isFinished();
-  }
+  }*/
 }

@@ -48,7 +48,7 @@ public final class Constants {
     // Wheel speeds
     public static double FEED_SPEED = 0.7; // Speed at which intake wheel feeds to shooter wheel
     public static double MAX_INTAKE_SPEED = 0.575;
-    public static double DEFAULT_SHOOT_SPEED = 0.6;
+    public static double DEFAULT_SHOOT_SPEED = 0.77;
 
     // Drive train config
     public static double MAX_DRIVE_SPEED = 0.9; // MAX POWAAAAAAA!!!

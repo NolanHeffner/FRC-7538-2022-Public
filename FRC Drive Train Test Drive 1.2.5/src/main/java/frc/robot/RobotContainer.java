@@ -18,10 +18,12 @@ import frc.robot.commands.DriveTrain.WestCoastDrive;
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.IntakeBalls;
 // import frc.robot.commands.WheelSystem.RunShooter; // Won't be uncommented unless we recalibrate T5
-import frc.robot.commands.WheelSystem.RunIntake;
+// import frc.robot.commands.WheelSystem.RunIntake;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
+import frc.robot.commands.WheelSystem.RunIntake;
+import frc.robot.commands.WheelSystem.RunShooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -65,14 +67,14 @@ public class RobotContainer {
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
-    // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
+    JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
 
     // Link buttons to commands
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
-    xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
-    // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -2)); // Does not work lol bc shooter is so jank
+    xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.15));
+    xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.15)); // Does not work lol bc shooter is so jank
   }
 
   /**

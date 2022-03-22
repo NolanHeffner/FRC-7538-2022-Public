@@ -22,7 +22,7 @@ public class Autonomous extends SequentialCommandGroup {
   public Autonomous(DriveTrain driveTrain, WheelSystem wheelSystem) {
     addCommands(
       new setMotorMode(driveTrain, Mode.BRAKE),
-      new AutoDrive(driveTrain, 0.305 * -5.2), // Drive 5.5 feet
+      new AutoDrive(driveTrain, 0.305 * -8.6), // Drive 9.5 feet back
       new AutoShoot(wheelSystem),
       new Wait(driveTrain, 1000),
       new setMotorMode(driveTrain, Mode.COAST));

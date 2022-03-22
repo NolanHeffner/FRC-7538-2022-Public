@@ -96,11 +96,13 @@ public class DriveTrain extends SubsystemBase {
           rightInputLimiter.reset(rightInput);
         }
         // Sets motor speeds
-        if (m_limit_chooser.getSelected()) {
+        /* if (m_limit_chooser.getSelected()) {
+          if (false) {
           setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
         } else {
           setMotors(leftInput, rightInput);
-        }
+        }*/
+        setMotors(leftInput, rightInput);        
       }
 
   public double deadBand(double speed, double deadBand) {
