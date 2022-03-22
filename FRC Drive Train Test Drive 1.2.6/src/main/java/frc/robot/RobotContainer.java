@@ -58,7 +58,8 @@ public class RobotContainer {
     m_driveTrain.setDefaultCommand(new WestCoastDrive(
       m_driveTrain,
       driver::getLeftY,
-      driver::getRightX));
+      driver::getRightX,
+      driver::getXButtonPressed));
     m_wheelSystem.setDefaultCommand(
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),

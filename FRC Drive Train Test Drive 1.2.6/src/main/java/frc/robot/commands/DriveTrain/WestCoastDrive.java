@@ -5,7 +5,12 @@
 package frc.robot.commands.DriveTrain;
 
 import frc.robot.subsystems.DriveTrain;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class WestCoastDrive extends CommandBase {
@@ -14,8 +19,9 @@ public class WestCoastDrive extends CommandBase {
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to drive subsystem
   private DriveTrain m_subsystem;
   private DoubleSupplier leftStickY, rightStickX;
+  private BooleanSupplier xPressed;
 
-  public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX) {
+  public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX, BooleanSupplier xPressed) {
     // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
     this.leftStickY = leftStickY;
@@ -32,7 +38,24 @@ public class WestCoastDrive extends CommandBase {
   @Override
   public void execute() {
     // Calls the custom arcadeDrive method which converts stick axes values to motor inputs in DriveTrain.java
-    m_subsystem.arcadeDrive(leftStickY.getAsDouble(), rightStickX.getAsDouble());
+    double leftStickYAsDouble = leftStickY.getAsDouble();
+    double rightStickXAsDouble = rightStickX.getAsDouble();
+
+    double Kp = -0.1;
+    double min_command = 0.05;
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+
+    if (xPressed.getAsBoolean()) {
+      double heading_error = -tx;
+      if (tx > 1.0) {
+        rightStickXAsDouble += Kp * heading_error - min_command;
+      } else if (tx < 1.0) {
+        rightStickXAsDouble += Kp * heading_error + min_command;
+      }
+      MathUtil.clamp(rightStickXAsDouble, -1, 1);
+    }
+
+    m_subsystem.arcadeDrive(leftStickYAsDouble, rightStickXAsDouble);
   }
 
   // Called once the command ends or is interrupted.
