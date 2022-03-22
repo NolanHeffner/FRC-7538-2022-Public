@@ -44,7 +44,8 @@ public final class Constants {
     public static final int RIGHT_2_CAN_ID = 4;
     public static final int SHOOTER_WHEEL_CAN_ID = 5;
     public static final int INTAKE_WHEEL_CAN_ID = 6;
-    public static final int PIGEON_CAN_ID = 7;
+    public static final int ACTUATOR_CAN_ID = 7;
+    public static final int PIGEON_CAN_ID = 8;
     
     // Wheel speeds
     public static final double FEED_SPEED = 0.7; // Speed at which intake wheel feeds to shooter wheel

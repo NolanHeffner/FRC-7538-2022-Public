@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.commands.Auto.Autonomous;
+//import frc.robot.commands.Auto.Autonomous;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
 
 // All Wheel System commands and subsystems
@@ -48,7 +48,7 @@ public class RobotContainer {
   // Create subsystems
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final WheelSystem m_wheelSystem = new WheelSystem();
-  private final Autonomous autoCommand;
+  //private final Autonomous autoCommand;
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
@@ -63,7 +63,7 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
-    autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
+    //autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     configureButtonBindings();
   }
 
@@ -78,6 +78,7 @@ public class RobotContainer {
     // JoystickButton joystickButton1 = new JoystickButton(driver1, Constants.JOYSTICK_AUXILIARY_BUTTON_1);
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
+    // JoystickButton xboxControllerXButton = new JoystickButton(driver, Constants.XBOX_X_BUTTON);
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
     // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
 

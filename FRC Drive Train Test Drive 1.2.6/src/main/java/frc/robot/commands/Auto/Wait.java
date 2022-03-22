@@ -13,7 +13,7 @@ public class Wait extends CommandBase {
   // Instantiates required subsystem and also timer variables that keep track of how long the subsystem has waited
   SubsystemBase m_subsystem;
   long m_startTime;
-  long m_currentTime;
+  long m_currentTime; 
   long m_waitTime;
   boolean isFinished = false;
 

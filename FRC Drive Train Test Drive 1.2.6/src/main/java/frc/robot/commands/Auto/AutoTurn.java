@@ -10,7 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /** An example command that uses an example subsystem. */
-public class AutoDrive extends PIDCommand {
+public class AutoTurn extends PIDCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_subsystem;
 
@@ -19,21 +19,21 @@ public class AutoDrive extends PIDCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoDrive(DriveTrain subsystem, double distance) {
+  public AutoTurn(DriveTrain subsystem, double degrees, double currentDegrees) {
     super(
-      new PIDController(Constants.kDriveP, Constants.kDriveI, Constants.kDriveD),
+      new PIDController(Constants.kTurnP, Constants.kTurnI, Constants.kTurnD),
       // Close loop on heading
-      subsystem::getEncoderAverage,
+      () -> subsystem.getDegrees() - currentDegrees,
       // Set reference to target
-      -distance,
+      degrees,
       // Pipe output to turn robot
       output -> subsystem.setMotors(
-        Math.min(output, Constants.SCALING_FACTOR * Constants.MAX_DRIVE_SPEED), 
-        Math.min(output, Constants.SCALING_FACTOR * Constants.MAX_DRIVE_SPEED)),
+        Math.min(output, Constants.TURN_FACTOR * Constants.SCALING_FACTOR * Constants.MAX_DRIVE_SPEED), // Turn right increases deg -> left move forward
+        -Math.min(output, Constants.TURN_FACTOR * Constants.SCALING_FACTOR * Constants.MAX_DRIVE_SPEED)), // Caps respective to max turning speed in teleop
       // Require the drive
       subsystem);
     getController()
-      .setTolerance(Constants.kDrivePTol, Constants.kDriveDTol);
+      .setTolerance(Constants.kTurnPTol, Constants.kTurnDTol);
 
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,7 +43,7 @@ public class AutoDrive extends PIDCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.resetEncoders();
+    m_subsystem.resetHeading();
     // m_drivetrain.resetHeading();
     super.initialize();
   }

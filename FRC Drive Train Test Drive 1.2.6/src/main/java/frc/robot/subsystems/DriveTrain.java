@@ -183,6 +183,10 @@ public class DriveTrain extends SubsystemBase {
     return Rotation2d.fromDegrees(pigeonGyro.getAngle());
   }
 
+  public double getDegrees() {
+    return pigeonGyro.getAngle();
+  }
+
   public double getTurnRate() {
     return -pigeonGyro.getRate();
   }
