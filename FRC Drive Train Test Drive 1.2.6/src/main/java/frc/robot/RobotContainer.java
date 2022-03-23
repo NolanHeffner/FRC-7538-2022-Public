@@ -4,30 +4,30 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
-//import frc.robot.commands.Auto.Autonomous;
+import frc.robot.commands.Auto.Autonomous;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
 
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.IntakeBalls;
 import frc.robot.commands.WheelSystem.RunIntake;
+import frc.robot.commands.WheelSystem.RunShooter;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
+
+// All Auto / Trajectory imports
+/*import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-// All Auto / Trajectory imports
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,6 +36,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;*/
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,7 +49,7 @@ public class RobotContainer {
   // Create subsystems
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final WheelSystem m_wheelSystem = new WheelSystem();
-  //private final Autonomous autoCommand;
+  private final Autonomous autoCommand;
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
@@ -64,7 +65,7 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
-    //autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
+    autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     configureButtonBindings();
   }
 
@@ -76,19 +77,18 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Create buttons to link to commands
-    // JoystickButton joystickButton1 = new JoystickButton(driver1, Constants.JOYSTICK_AUXILIARY_BUTTON_1);
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
     // JoystickButton xboxControllerXButton = new JoystickButton(driver, Constants.XBOX_X_BUTTON);
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
-    // JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
+    JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
 
     // Link buttons to commands
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
-    // xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, () -> -2)); // Does not work lol bc shooter is so jank
+    xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.3)); // Does not work lol bc shooter is so jank
   }
 
   /**
@@ -97,6 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    /*
     var autoVoltageConstraint =
     new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
@@ -142,9 +143,11 @@ public class RobotContainer {
           new PIDController(Constants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         m_driveTrain::tankDriveVolts,
-        m_driveTrain);
+        m_driveTrain);*/
 
     // A RamseteCommand will run in autonomous
-    return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
+    //return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
+
+    return autoCommand;
   }
 }

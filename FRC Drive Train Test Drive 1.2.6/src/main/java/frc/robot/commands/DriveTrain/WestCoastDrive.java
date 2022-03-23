@@ -9,8 +9,8 @@ import frc.robot.subsystems.DriveTrain;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.math.MathUtil;
+// import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class WestCoastDrive extends CommandBase {
@@ -26,6 +26,7 @@ public class WestCoastDrive extends CommandBase {
     m_subsystem = subsystem;
     this.leftStickY = leftStickY;
     this.rightStickX = rightStickX;
+    this.xPressed = xPressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -40,7 +41,8 @@ public class WestCoastDrive extends CommandBase {
     // Calls the custom arcadeDrive method which converts stick axes values to motor inputs in DriveTrain.java
     double leftStickYAsDouble = leftStickY.getAsDouble();
     double rightStickXAsDouble = rightStickX.getAsDouble();
-
+    
+    /* Uncommented when receive limelight
     double Kp = -0.1;
     double min_command = 0.05;
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -53,7 +55,7 @@ public class WestCoastDrive extends CommandBase {
         rightStickXAsDouble += Kp * heading_error + min_command;
       }
       MathUtil.clamp(rightStickXAsDouble, -1, 1);
-    }
+    }*/
 
     m_subsystem.arcadeDrive(leftStickYAsDouble, rightStickXAsDouble);
   }

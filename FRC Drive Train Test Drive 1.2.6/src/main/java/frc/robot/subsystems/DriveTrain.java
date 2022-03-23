@@ -4,18 +4,19 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
+// Gyro stuff we're not using ;-;
+/*import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;*/
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import frc.robot.Constants;
 import frc.robot.filters.AdjustableSlewRateLimiter;
 
@@ -30,10 +31,10 @@ public class DriveTrain extends SubsystemBase {
 
   // Instantiates Pigeon 2.0 IMU
 
-  WPI_Pigeon2 pigeonGyro = new WPI_Pigeon2(Constants.PIGEON_CAN_ID);
+  /*WPI_Pigeon2 pigeonGyro = new WPI_Pigeon2(Constants.PIGEON_CAN_ID);
   DifferentialDriveOdometry m_odometry;
   public static DifferentialDriveKinematics kDriveKinematics =
-        new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);
+        new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);*/
 
   // Create chooser for accel limiting
   SendableChooser<Boolean> m_limit_chooser = new SendableChooser<>();
@@ -58,7 +59,7 @@ public class DriveTrain extends SubsystemBase {
     m_limit_chooser.setDefaultOption("No limit", false);
     m_limit_chooser.addOption("Limited", true);
 
-    m_odometry = new DifferentialDriveOdometry(getHeading());
+    // m_odometry = new DifferentialDriveOdometry(getHeading());
   }
 
   public void invertRightMotors(boolean isInverted) {
@@ -175,7 +176,7 @@ public class DriveTrain extends SubsystemBase {
   *   Handles gyro
   */
 
-  public void resetHeading() {
+  /*public void resetHeading() {
     pigeonGyro.reset();
   }
 
@@ -204,13 +205,13 @@ public class DriveTrain extends SubsystemBase {
     return new DifferentialDriveWheelSpeeds(
       leftA.getSelectedSensorVelocity() * Constants.RAW_SENSOR_UNITS_TO_METERS, 
       rightA.getSelectedSensorVelocity() * Constants.RAW_SENSOR_UNITS_TO_METERS);
-  }
+  }*/
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_odometry.update(
-      getHeading(), getEncoderPosition(leftA), getEncoderPosition(rightA));
+    /*m_odometry.update(
+      getHeading(), getEncoderPosition(leftA), getEncoderPosition(rightA));*/
   }
 
   @Override
