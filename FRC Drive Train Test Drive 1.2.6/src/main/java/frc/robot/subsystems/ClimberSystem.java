@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -34,6 +35,24 @@ public class ClimberSystem extends SubsystemBase {
     double leftPos = linearActuatorA.getSelectedSensorPosition();
     double rightPos = linearActuatorB.getSelectedSensorPosition();
     return (leftPos + rightPos) / 2 * Constants.RAW_SENSOR_UNITS_TO_METERS;
+  }
+
+  public static enum Mode {
+    COAST,
+    BRAKE
+  }
+
+  public void setMode(Mode mode) {
+    switch(mode) {
+      case COAST:
+        linearActuatorA.setNeutralMode(NeutralMode.Coast);
+        linearActuatorB.setNeutralMode(NeutralMode.Coast);
+        break;
+      case BRAKE:
+        linearActuatorA.setNeutralMode(NeutralMode.Brake);
+        linearActuatorB.setNeutralMode(NeutralMode.Brake);
+        break;
+    }
   }
 
   @Override

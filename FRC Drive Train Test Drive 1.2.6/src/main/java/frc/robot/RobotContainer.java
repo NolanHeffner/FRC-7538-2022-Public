@@ -13,7 +13,7 @@ import frc.robot.subsystems.ClimberSystem;
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.Auto.Autonomous;
-import frc.robot.commands.ClimberSystem.ExtendActuator;
+import frc.robot.commands.ClimberSystem.RetractActuator;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
 import frc.robot.commands.DriveTrain.ZOOM;
 // All Wheel System commands and subsystems
@@ -91,7 +91,7 @@ public class RobotContainer {
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
-    xboxControllerXButton.whenPressed(new ExtendActuator(m_climberSystem));
+    xboxControllerXButton.whenPressed(new RetractActuator(m_climberSystem));
     xboxControllerYButton.whenPressed(new RunShooter(m_wheelSystem, 0.3));
 
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));

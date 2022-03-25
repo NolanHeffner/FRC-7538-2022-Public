@@ -4,12 +4,13 @@
 
 package frc.robot.commands.ClimberSystem;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSystem;
-import frc.robot.subsystems.ClimberSystem.Mode;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /** An example command that uses an example subsystem. */
-public class ExtendActuator extends CommandBase {
+public class RetractActuator extends PIDCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSystem m_subsystem;
 
@@ -18,16 +19,32 @@ public class ExtendActuator extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExtendActuator(ClimberSystem subsystem) {
+  public RetractActuator(ClimberSystem subsystem) {
+    super(
+      new PIDController(Constants.kClimbP, Constants.kClimbI, Constants.kClimbD),
+      // Close loop on heading
+      subsystem::getEncoderAverage,
+      // Set reference to target
+      -Constants.CLIMB_DISTANCE,
+      // Pipe output to turn robot
+      output -> subsystem.set(
+        Math.min(output, Constants.MAX_CLIMB_SPEED)),
+      // Require the drive
+      subsystem);
+    getController()
+      .setTolerance(Constants.kClimbPTol, Constants.kClimbDTol);
+
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
-  public void execute() {
-    m_subsystem.setMode(Mode.COAST);
-    m_subsystem.set(0);
+  public void initialize() {
+    m_subsystem.resetEncoders();
+    // m_drivetrain.resetHeading();
+    super.initialize();
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +54,6 @@ public class ExtendActuator extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return getController().atSetpoint();
   }
 }
