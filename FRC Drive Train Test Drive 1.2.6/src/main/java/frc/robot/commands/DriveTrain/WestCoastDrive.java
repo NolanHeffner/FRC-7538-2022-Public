@@ -19,14 +19,14 @@ public class WestCoastDrive extends CommandBase {
   // Creates private variables that we can use dependency injection to assign values to; will be used to send instructions to drive subsystem
   private DriveTrain m_subsystem;
   private DoubleSupplier leftStickY, rightStickX;
-  private BooleanSupplier xPressed;
+  // private BooleanSupplier xPressed;
 
   public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX, BooleanSupplier xPressed) {
     // Dependency injection of constructor parameters into local variables
     m_subsystem = subsystem;
     this.leftStickY = leftStickY;
     this.rightStickX = rightStickX;
-    this.xPressed = xPressed;
+    // this.xPressed = xPressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }

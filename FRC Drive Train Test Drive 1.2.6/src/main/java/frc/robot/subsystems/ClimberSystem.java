@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -12,11 +12,28 @@ public class ClimberSystem extends SubsystemBase {
 
   // Instantiates wheels to using port maps to connect code to Roborio
 
-  WPI_VictorSPX linearActuator = new WPI_VictorSPX(Constants.ACTUATOR_CAN_ID);
+  WPI_TalonFX linearActuatorA = new WPI_TalonFX(Constants.ACTUATOR_A_CAN_ID);
+  WPI_TalonFX linearActuatorB = new WPI_TalonFX(Constants.ACTUATOR_B_CAN_ID);
 
   // Pushes new speed to intake wheel motor
   public void set(double speed) {
-    linearActuator.set(speed);
+    linearActuatorA.set(speed);
+    linearActuatorB.set(speed);
+  }
+
+  public void resetEncoders() {
+    linearActuatorA.setSelectedSensorPosition(0);
+    linearActuatorB.setSelectedSensorPosition(0);
+  }
+
+  public double getEncoderPosition(WPI_TalonFX talon) {
+    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS;
+  }
+
+  public double getEncoderAverage() { // good enough for forwards / backwards
+    double leftPos = linearActuatorA.getSelectedSensorPosition();
+    double rightPos = linearActuatorB.getSelectedSensorPosition();
+    return (leftPos + rightPos) / 2 * Constants.RAW_SENSOR_UNITS_TO_METERS;
   }
 
   @Override

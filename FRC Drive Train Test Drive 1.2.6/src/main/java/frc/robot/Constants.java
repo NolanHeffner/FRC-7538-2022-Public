@@ -44,8 +44,9 @@ public final class Constants {
     public static final int RIGHT_2_CAN_ID = 4;
     public static final int SHOOTER_WHEEL_CAN_ID = 5;
     public static final int INTAKE_WHEEL_CAN_ID = 6;
-    public static final int ACTUATOR_CAN_ID = 7;
-    public static final int PIGEON_CAN_ID = 8;
+    public static final int ACTUATOR_A_CAN_ID = 7;
+    public static final int ACTUATOR_B_CAN_ID = 8;
+    // public static final int PIGEON_CAN_ID = 9; ;-;
     
     // Wheel speeds
     public static final double FEED_SPEED = 0.7; // Speed at which intake wheel feeds to shooter wheel
@@ -75,19 +76,27 @@ public final class Constants {
     public static final double kTurnPTol = 0;
     public static final double kTurnDTol = 0;
 
-    public static final double TRACK_WIDTH_METERS = 0.5; // NOT ACTUALLY, NEED TO FIND OUT
-    public static final double FULL_SPEED_IN_METERS = 1; // NOT ACTUALLY, NEED TO FIND OUT
-    public static final double MAX_SPEED_IN_METERS_PER_SECOND = FULL_SPEED_IN_METERS * MAX_DRIVE_SPEED;
-    public static final double MAX_ACCEL_IN_METERS_PER_SECOND = DRIVE_TRAIN_RATE_LIMIT; // Not crucial due to later use of DifferentialDriveVoltageConstraint
+    public static final double kClimbP = 0;
+    public static final double kClimbI = 0;
+    public static final double kClimbD = 0;
+    public static final double kClimbPTol = 0;
+    public static final double kClimbDTol = 0;
 
-    public static final double kVoltsPos = 0; // NEED TO CONFIGURE WHOLE SECTION
-    public static final double kVoltsVel = 0;
-    public static final double kVoltsAcc = 0;
+    public static final double MAX_CLIMB_SPEED = 0.1;
+    public static final double CLIMB_DISTANCE = 0.1;
 
+    // :(
+    // public static final double TRACK_WIDTH_METERS = 0.5; // NOT ACTUALLY, NEED TO FIND OUT
+    // public static final double FULL_SPEED_IN_METERS = 1; // NOT ACTUALLY, NEED TO FIND OUT
+    // public static final double MAX_SPEED_IN_METERS_PER_SECOND = FULL_SPEED_IN_METERS * MAX_DRIVE_SPEED;
+    // public static final double MAX_ACCEL_IN_METERS_PER_SECOND = DRIVE_TRAIN_RATE_LIMIT; // Not crucial due to later use of DifferentialDriveVoltageConstraint
+    // public static final double kVoltsPos = 0; // NEED TO CONFIGURE WHOLE SECTION
+    // public static final double kVoltsVel = 0;
+    // public static final double kVoltsAcc = 0;
     // Baseline values for ramsete controller; should work, provided other values are right- however, check for issues during troubleshooting
-    public static final double kRamseteB = 2;
-    public static final double kRamseteZeta = 0.7;
-    public static final double kPDriveVel = 0; // NEEDS TO BE CONFIGURED TO ROBOT 
+    // public static final double kRamseteB = 2;
+    // public static final double kRamseteZeta = 0.7;
+    // public static final double kPDriveVel = 0; // NEEDS TO BE CONFIGURED TO ROBOT 
 
     // Dead zones - Sets controller inputs to 0 in a certain range around 0 values to account for stick drift / accidental nudges
     public static final double LY_DEADBAND = 0.15; // left stick, y-axis
