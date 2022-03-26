@@ -4,42 +4,49 @@
 
 package frc.robot.commands.ClimberSystem;
 
-import frc.robot.Constants;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSystem;
 import frc.robot.subsystems.ClimberSystem.Mode;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class RetractActuator extends CommandBase {
+public class NeutralActuator extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSystem m_subsystem;
+  private BooleanSupplier isStartButtonPressed;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RetractActuator(ClimberSystem subsystem) {
+  public NeutralActuator(ClimberSystem subsystem, BooleanSupplier isStartButtonPressed) {
     m_subsystem = subsystem;
+    this.isStartButtonPressed = isStartButtonPressed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    m_subsystem.setMode(Mode.BRAKE);
-    m_subsystem.set(Constants.MAX_CLIMB_SPEED);
+    if(isStartButtonPressed.getAsBoolean()) {
+      m_subsystem.setMode(Mode.COAST);
+    } else {
+      m_subsystem.setMode(Mode.BRAKE);
+    }
+
+    m_subsystem.set(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_subsystem.isExtended(true);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

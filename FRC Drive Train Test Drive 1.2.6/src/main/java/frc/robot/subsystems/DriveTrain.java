@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;*/
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -37,8 +37,8 @@ public class DriveTrain extends SubsystemBase {
         new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);*/
 
   // Create chooser for accel limiting
-  SendableChooser<Boolean> m_limit_chooser = new SendableChooser<>();
-  boolean m_currentChoice = false;
+  //SendableChooser<Boolean> m_limit_chooser = new SendableChooser<>();
+  //boolean m_currentChoice = false;
 
   // Creates slew rate limiters in case we decide to limit acceleration for motor protection
   AdjustableSlewRateLimiter leftInputLimiter = new AdjustableSlewRateLimiter(Constants.DRIVE_TRAIN_RATE_LIMIT);
@@ -56,8 +56,8 @@ public class DriveTrain extends SubsystemBase {
     leftB.follow(leftA);
     rightB.follow(rightA);
 
-    m_limit_chooser.setDefaultOption("No limit", false);
-    m_limit_chooser.addOption("Limited", true);
+    //m_limit_chooser.setDefaultOption("No limit", false);
+    //m_limit_chooser.addOption("Limited", true);
 
     // m_odometry = new DifferentialDriveOdometry(getHeading());
   }
@@ -106,7 +106,7 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);
     // Update acceleration limit to option selected on SmartDashboard
     // leftInputLimiter.setRateLimit(SmartDashboard.getNumber("", defaultValue));
-    if (m_limit_chooser.getSelected() != m_currentChoice) {
+    /*if (m_limit_chooser.getSelected() != m_currentChoice) {
       m_currentChoice = m_limit_chooser.getSelected();
       leftInputLimiter.reset(leftInput);
       rightInputLimiter.reset(rightInput);
@@ -116,7 +116,8 @@ public class DriveTrain extends SubsystemBase {
       setMotors(leftInputLimiter.calculate(leftInput), rightInputLimiter.calculate(rightInput));
     } else {
       setMotors(leftInput, rightInput);
-    }
+    }*/
+    setMotors(leftInput, rightInput);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -149,14 +150,14 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getEncoderPosition(WPI_TalonFX talon) {
-    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS;
+    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_DRIVE_METERS;
   }
 
   public double getEncoderAverage() { // good enough for forwards / backwards
     double leftPos = leftA.getSelectedSensorPosition();
     double rightPos = rightA.getSelectedSensorPosition();
     double sensorUnitAverage = (leftPos + rightPos) / 2;
-    double ret = sensorUnitAverage * Constants.RAW_SENSOR_UNITS_TO_METERS;
+    double ret = sensorUnitAverage * Constants.RAW_SENSOR_UNITS_TO_DRIVE_METERS;
     updateDashboard();
     SmartDashboard.putNumber("AutoDist: ", ret);
     return ret;
@@ -164,8 +165,8 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void updateDashboard() {
-    SmartDashboard.putNumber("leftEncoder (meters): ", leftA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS);
-    SmartDashboard.putNumber("rightEncoder (meters): ", rightA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS);
+    SmartDashboard.putNumber("leftEncoder (meters): ", leftA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_DRIVE_METERS);
+    SmartDashboard.putNumber("rightEncoder (meters): ", rightA.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_DRIVE_METERS);
     SmartDashboard.putNumber("Talon ID1 Temperature: ", leftA.getTemperature());
     SmartDashboard.putNumber("Talon ID2 Temperature: ", leftB.getTemperature());
     SmartDashboard.putNumber("Talon ID3 Temperature: ", rightA.getTemperature());

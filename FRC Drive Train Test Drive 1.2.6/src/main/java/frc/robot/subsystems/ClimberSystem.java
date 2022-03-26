@@ -16,6 +16,8 @@ public class ClimberSystem extends SubsystemBase {
   WPI_TalonFX linearActuatorA = new WPI_TalonFX(Constants.ACTUATOR_A_CAN_ID);
   WPI_TalonFX linearActuatorB = new WPI_TalonFX(Constants.ACTUATOR_B_CAN_ID);
 
+  private boolean isExtended = false;
+
   // Pushes new speed to intake wheel motor
   public void set(double speed) {
     linearActuatorA.set(speed);
@@ -28,13 +30,13 @@ public class ClimberSystem extends SubsystemBase {
   }
 
   public double getEncoderPosition(WPI_TalonFX talon) {
-    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_METERS;
+    return talon.getSelectedSensorPosition() * Constants.RAW_SENSOR_UNITS_TO_WINCH_METERS;
   }
 
   public double getEncoderAverage() { // good enough for forwards / backwards
     double leftPos = linearActuatorA.getSelectedSensorPosition();
     double rightPos = linearActuatorB.getSelectedSensorPosition();
-    return (leftPos + rightPos) / 2 * Constants.RAW_SENSOR_UNITS_TO_METERS;
+    return (leftPos + rightPos) / 2 * Constants.RAW_SENSOR_UNITS_TO_WINCH_METERS;
   }
 
   public static enum Mode {
@@ -53,6 +55,14 @@ public class ClimberSystem extends SubsystemBase {
         linearActuatorB.setNeutralMode(NeutralMode.Brake);
         break;
     }
+  }
+
+  public void isExtended(boolean boolInput) {
+    isExtended = boolInput;
+  }
+
+  public boolean getIsExtended() {
+    return isExtended;
   }
 
   @Override

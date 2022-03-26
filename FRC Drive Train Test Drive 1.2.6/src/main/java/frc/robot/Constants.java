@@ -59,7 +59,7 @@ public final class Constants {
     public static final double TURN_FACTOR = 0.6; // Turn influence decreased
     public static final double SCALING_FACTOR = MAX_DRIVE_SPEED / (1 + TURN_FACTOR);
 
-    public static final double RAW_SENSOR_UNITS_TO_METERS = 1.948201497395833e-5; // Roughly 50000 sensor units per meter
+    public static final double RAW_SENSOR_UNITS_TO_DRIVE_METERS = 1.948201497395833e-5; // Roughly 50000 sensor units per meter
     // 2048 raw units per motor rotation
     // 3 rotations of motor per wheel rotation
     // 0.478.. meters per wheel rotation
@@ -82,8 +82,9 @@ public final class Constants {
     public static final double kClimbPTol = 0;
     public static final double kClimbDTol = 0;
 
-    public static final double MAX_CLIMB_SPEED = 0.1;
+    public static final double MAX_CLIMB_SPEED = 0.8;
     public static final double CLIMB_DISTANCE = 0.1;
+    public static final double RAW_SENSOR_UNITS_TO_WINCH_METERS = 0;
 
     // :(
     // public static final double TRACK_WIDTH_METERS = 0.5; // NOT ACTUALLY, NEED TO FIND OUT

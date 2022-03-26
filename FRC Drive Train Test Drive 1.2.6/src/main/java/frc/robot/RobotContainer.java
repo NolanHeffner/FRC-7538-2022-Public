@@ -9,11 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.ClimberSystem;
 // All Drive Train commands and subsystems
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.Auto.Autonomous;
-import frc.robot.commands.ClimberSystem.RetractActuator;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
 import frc.robot.commands.DriveTrain.ZOOM;
 // All Wheel System commands and subsystems
@@ -24,6 +22,10 @@ import frc.robot.commands.WheelSystem.RunShooter;
 import frc.robot.commands.WheelSystem.ShootBalls;
 import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
+// All Climber commands and subsystems
+import frc.robot.subsystems.ClimberSystem;
+import frc.robot.commands.ClimberSystem.NeutralActuator;
+import frc.robot.commands.ClimberSystem.RetractActuator;
 
 // All Auto / Trajectory imports
 /*import java.util.List;
@@ -67,6 +69,7 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
+    m_climberSystem.setDefaultCommand(new NeutralActuator(m_climberSystem, driver::getStartButton));
     autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     configureButtonBindings();
   }
@@ -86,17 +89,21 @@ public class RobotContainer {
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
     JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
     JoystickButton xboxControllerLeftStickButton = new JoystickButton(driver, Constants.XBOX_LEFT_STICK_BUTTON);
+    JoystickButton xboxControllerScreenieButton = new JoystickButton(driver, Constants.XBOX_SCREENIE_BUTTON);
 
     // Link buttons to commands
     //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
     xboxControllerXButton.whenPressed(new RetractActuator(m_climberSystem));
-    xboxControllerYButton.whenPressed(new RunShooter(m_wheelSystem, 0.3));
-
+    xboxControllerYButton.whileHeld(
+      new SequentialCommandGroup(
+        new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
+        new RunShooter(m_wheelSystem, 0.46)));
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
     xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.3)); // Does not work lol bc shooter is so jank
     xboxControllerLeftStickButton.whileHeld(new ZOOM(m_driveTrain));
+    xboxControllerScreenieButton.whileHeld(new RetractActuator(m_climberSystem));
   }
 
   /**
