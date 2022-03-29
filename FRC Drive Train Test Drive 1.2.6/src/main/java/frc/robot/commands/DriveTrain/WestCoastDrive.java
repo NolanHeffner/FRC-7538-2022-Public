@@ -4,6 +4,7 @@
 
 package frc.robot.commands.DriveTrain;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -13,11 +14,13 @@ public class WestCoastDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private DriveTrain m_subsystem;
   private DoubleSupplier leftStickY, rightStickX;
+  private BooleanSupplier xPressed;
 
   public WestCoastDrive(DriveTrain subsystem, DoubleSupplier leftStickY, DoubleSupplier rightStickX, BooleanSupplier xPressed) {
     m_subsystem = subsystem;
     this.leftStickY = leftStickY;
     this.rightStickX = rightStickX;
+    this.xPressed = xPressed;
     addRequirements(subsystem);
   }
   
@@ -25,7 +28,8 @@ public class WestCoastDrive extends CommandBase {
   public void execute() {
     double leftStickYAsDouble = leftStickY.getAsDouble();
     double rightStickXAsDouble = rightStickX.getAsDouble();
-    //double 
+    double maxSpeed = xPressed.getAsBoolean() ? Constants.ZOOM_SPEED : Constants.MAX_DRIVE_SPEED;
+	  double turnFactor = xPressed.getAsBoolean() ? Constants.ZOOM_TURN_FACTOR : Constants.TURN_FACTOR;
     
     /* Uncommented when receive limelight
     double Kp = -0.1;
@@ -42,7 +46,7 @@ public class WestCoastDrive extends CommandBase {
       MathUtil.clamp(rightStickXAsDouble, -1, 1);
     }*/
 
-    m_subsystem.arcadeDrive(leftStickYAsDouble, rightStickXAsDouble);
+    m_subsystem.arcadeDrive(leftStickYAsDouble, rightStickXAsDouble, turnFactor, maxSpeed);
   }
 
   @Override
