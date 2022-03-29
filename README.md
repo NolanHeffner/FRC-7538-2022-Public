@@ -11,8 +11,6 @@ We have encoders integrated with the Falcon 500s. We're also thinking of using a
 ## Plans for future iterations of the code
 In future years we hope to further incorporate encoders, kinematics, and odometry into our robot hardware and control for greater precision in autonomous mode. We're slowly recovering from COVID-19's pernicious effects on education, but it'll be a while before we attempt anything really advanced.
 
-Update: Trying to incorporate limelight & gyros in version 1.2.6... slowly dying. Note to viewers: a lot of the new code has been roughly copied from other sources as a template for our robot; it hasn't been tested, revised, or otherwise adjusted. We don't recommend you copy it or use it as a model...
-
 ## Versions:
 1.2.1 - 1.2.4 (deleted branches) - Primarily just driving, starting on the wheel system. Long deprecated and replaced by newer versions
 
@@ -20,7 +18,7 @@ Update: Trying to incorporate limelight & gyros in version 1.2.6... slowly dying
 
 1.2.6 (branch) - The version we use for competition, stable enough for consistent use
 
-1.2.7-Experimental (branch) - Changes to control scheme etc. we have not had time to properly test and therefore do not feel comfortable using during upcoming competitions
+1.2.7-Experimental (branch) - Changes to control scheme etc. we have not had time to properly test and therefore do not feel comfortable using during upcoming competitions. Includes limelight, gyro magics, changes to arcade drive
 
 ## Contributors:
 Nolan Heffner, Emma, Jessica Gay (former), Anthony, Spencer, Abdou Senghore, Jabel Senghore, and Micah
