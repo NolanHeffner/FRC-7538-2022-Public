@@ -15,8 +15,11 @@ Update: Trying to incorporate limelight & gyros in version 1.2.6... slowly dying
 
 ## Versions:
 1.2.1 - 1.2.4 (deleted branches) - Primarily just driving, starting on the wheel system. Long deprecated and replaced by newer versions
+
 1.2.5 (Main) - Currently deprecated, still the most stable version
+
 1.2.6 (branch) - The version we use for competition, stable enough for consistent use
+
 1.2.7-Experimental (branch) - Changes to control scheme etc. we have not had time to properly test and therefore do not feel comfortable using during upcoming competitions
 
 ## Contributors:
