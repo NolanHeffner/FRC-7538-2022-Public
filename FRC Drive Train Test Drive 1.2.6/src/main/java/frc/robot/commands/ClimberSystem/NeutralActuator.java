@@ -4,49 +4,34 @@
 
 package frc.robot.commands.ClimberSystem;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSystem;
-import frc.robot.subsystems.ClimberSystem.Mode;
 
-/** An example command that uses an example subsystem. */
 public class NeutralActuator extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSystem m_subsystem;
-  private BooleanSupplier isStartButtonPressed;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public NeutralActuator(ClimberSystem subsystem, BooleanSupplier isStartButtonPressed) {
+  public NeutralActuator(ClimberSystem subsystem) {
     m_subsystem = subsystem;
-    this.isStartButtonPressed = isStartButtonPressed;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void execute() {
-    if(isStartButtonPressed.getAsBoolean()) {
-      m_subsystem.setMode(Mode.COAST);
-    } else {
-      m_subsystem.setMode(Mode.BRAKE);
-    }
-
+  public void initialize() {
     m_subsystem.set(0);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void execute() {
+    m_subsystem.set(0);
+  }
 
-  // Returns true when the command should end.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -19,15 +19,15 @@ public class Jiggle extends SequentialCommandGroup {
   public Jiggle(WheelSystem wheelSystem) {
     addCommands(
       new RunIntake(wheelSystem, -0.3),
-      // new RunShooter(wheelSystem, () -> -0.3),
+      new RunShooter(wheelSystem, -0.3),
       new Wait(wheelSystem, 150),
       new RunIntake(wheelSystem, 0.2),
-      // new RunShooter(wheelSystem, () -> 0.2),
+      new RunShooter(wheelSystem, 0.2),
       new Wait(wheelSystem, 200),
-      // new RunIntake(wheelSystem, () -> -0.1),
-      // new RunShooter(wheelSystem, () -> -0.1),
-      // new Wait(wheelSystem, 200),
-      new RunIntake(wheelSystem, 0));
-      // new RunShooter(wheelSystem, () -> 0));
+      new RunIntake(wheelSystem, -0.1),
+      new RunShooter(wheelSystem, -0.1),
+      new Wait(wheelSystem, 200),
+      new RunIntake(wheelSystem, 0),
+      new RunShooter(wheelSystem, 0));
   }
 }

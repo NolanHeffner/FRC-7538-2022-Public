@@ -16,8 +16,6 @@ public class ClimberSystem extends SubsystemBase {
   WPI_TalonFX linearActuatorA = new WPI_TalonFX(Constants.ACTUATOR_A_CAN_ID);
   WPI_TalonFX linearActuatorB = new WPI_TalonFX(Constants.ACTUATOR_B_CAN_ID);
 
-  private boolean isExtended = false;
-
   // Pushes new speed to intake wheel motor
   public void set(double speed) {
     linearActuatorA.set(speed);
@@ -55,23 +53,5 @@ public class ClimberSystem extends SubsystemBase {
         linearActuatorB.setNeutralMode(NeutralMode.Brake);
         break;
     }
-  }
-
-  public void isExtended(boolean boolInput) {
-    isExtended = boolInput;
-  }
-
-  public boolean getIsExtended() {
-    return isExtended;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }

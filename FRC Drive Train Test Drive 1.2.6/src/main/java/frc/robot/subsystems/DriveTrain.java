@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;*/
 
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+// import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -21,7 +21,6 @@ import frc.robot.Constants;
 import frc.robot.filters.AdjustableSlewRateLimiter;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
 
   // Instantiates motors that subsystem controls to link code to CAN bus
   WPI_TalonFX leftA = new WPI_TalonFX(Constants.LEFT_1_CAN_ID);
@@ -213,10 +212,5 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
     /*m_odometry.update(
       getHeading(), getEncoderPosition(leftA), getEncoderPosition(rightA));*/
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }

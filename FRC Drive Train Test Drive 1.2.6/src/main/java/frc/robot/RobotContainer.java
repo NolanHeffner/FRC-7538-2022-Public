@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,8 +23,8 @@ import frc.robot.commands.Auto.AutoShoot;
 import frc.robot.commands.WheelSystem.Jiggle;
 // All Climber commands and subsystems
 import frc.robot.subsystems.ClimberSystem;
+import frc.robot.commands.ClimberSystem.ActuateClimber;
 import frc.robot.commands.ClimberSystem.NeutralActuator;
-import frc.robot.commands.ClimberSystem.RetractActuator;
 
 // All Auto / Trajectory imports
 /*import java.util.List;
@@ -41,12 +40,6 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;*/
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
 
   // Create subsystems
@@ -69,48 +62,44 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
-    m_climberSystem.setDefaultCommand(new NeutralActuator(m_climberSystem, driver::getStartButton));
+    m_climberSystem.setDefaultCommand(new NeutralActuator(m_climberSystem));
     autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     configureButtonBindings();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
     // Create buttons to link to commands
+
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
-    JoystickButton xboxControllerXButton = new JoystickButton(driver, Constants.XBOX_X_BUTTON);
     JoystickButton xboxControllerYButton = new JoystickButton(driver, Constants.XBOX_Y_BUTTON);
+
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
     JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
-    JoystickButton xboxControllerLeftStickButton = new JoystickButton(driver, Constants.XBOX_LEFT_STICK_BUTTON);
-    JoystickButton xboxControllerScreenieButton = new JoystickButton(driver, Constants.XBOX_SCREENIE_BUTTON);
 
-    // Link buttons to commands
-    //xboxControllerAButton.whenPressed(new RunIntake(m_wheelSystem, () -> Constants.INTAKE_SPEED)).whenReleased(new RunIntake(m_wheelSystem, () -> 0));
+    JoystickButton xboxControllerScreenieButton = new JoystickButton(driver, Constants.XBOX_SCREENIE_BUTTON);
+    JoystickButton xboxControllerThreeLinesButton = new JoystickButton(driver, Constants.XBOX_THREE_LINES_BUTTON);
+    
+    JoystickButton xboxControllerLeftStickButton = new JoystickButton(driver, Constants.XBOX_LEFT_STICK_BUTTON);
+
+    // Link triggers to commands
+    
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
     xboxControllerBButton.whenPressed(new Jiggle(m_wheelSystem));
-    xboxControllerXButton.whenPressed(new RetractActuator(m_climberSystem));
     xboxControllerYButton.whileHeld(
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new RunShooter(m_wheelSystem, 0.46)));
+
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
     xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.3)); // Does not work lol bc shooter is so jank
+
+    xboxControllerScreenieButton.whileHeld(new ActuateClimber(m_climberSystem, () -> -Constants.MAX_CLIMB_SPEED));
+    xboxControllerThreeLinesButton.whileHeld(new ActuateClimber(m_climberSystem, () -> Constants.MAX_CLIMB_SPEED));
+
     xboxControllerLeftStickButton.whileHeld(new ZOOM(m_driveTrain));
-    xboxControllerScreenieButton.whileHeld(new RetractActuator(m_climberSystem));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     /*
     var autoVoltageConstraint =
