@@ -16,6 +16,10 @@ public class ClimberSystem extends SubsystemBase {
   WPI_TalonFX linearActuatorA = new WPI_TalonFX(Constants.ACTUATOR_A_CAN_ID);
   WPI_TalonFX linearActuatorB = new WPI_TalonFX(Constants.ACTUATOR_B_CAN_ID);
 
+  public ClimberSystem() {
+    setMode(Mode.BRAKE);
+  }
+
   // Pushes new speed to intake wheel motor
   public void set(double speed) {
     linearActuatorA.set(speed);

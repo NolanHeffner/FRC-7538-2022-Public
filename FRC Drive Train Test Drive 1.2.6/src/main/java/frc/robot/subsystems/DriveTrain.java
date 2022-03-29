@@ -93,13 +93,14 @@ public class DriveTrain extends SubsystemBase {
   */
 
   // Yes, I know I can implement Differential Drive and just use arcadeDrive(frw, rot), I'm just bored plz don't judge
-  public void arcadeDrive(double leftStickY, double rightStickX) {
+  public void arcadeDrive(double leftStickY, double rightStickX, double turnFactor, double maxSpeed) {
+    double scalingFactor = maxSpeed / (1 + turnFactor);
     // Arcade-style driving; left stick forward/backward for driving speed, right stick left/right for turning
     double leftStickY_DB = deadBand(leftStickY, Constants.LY_DEADBAND);
-    double rightStickX_DB = deadBand(rightStickX, Constants.RX_DEADBAND) * Constants.TURN_FACTOR;
+    double rightStickX_DB = deadBand(rightStickX, Constants.RX_DEADBAND) * turnFactor;
     // No circular limitations because LY and RX are on different sticks, but scaling factor to prevent values outside of [-1,1]
-    double leftInput = Constants.SCALING_FACTOR * (leftStickY_DB - rightStickX_DB);
-    double rightInput = Constants.SCALING_FACTOR * (leftStickY_DB + rightStickX_DB);
+    double leftInput = scalingFactor * (leftStickY_DB - rightStickX_DB);
+    double rightInput = scalingFactor * (leftStickY_DB + rightStickX_DB);
     // Display numbers to SmartDashboard to help inform drivers, especially during troubleshooting tests
     SmartDashboard.putNumber("Left Motor Speeds: ", leftInput);
     SmartDashboard.putNumber("Right Motor Speeds: ", rightInput);

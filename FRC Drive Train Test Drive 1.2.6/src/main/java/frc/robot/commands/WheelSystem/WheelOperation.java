@@ -4,18 +4,28 @@
 
 package frc.robot.commands.WheelSystem;
 
-import frc.robot.commands.Auto.CommandTimer;
 import frc.robot.subsystems.WheelSystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class WheelOperation extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+
+  /**
+   * NOTE: Unused because of lack of testing, probably useful for flexible control of shooter system
+   * Semantically the same as other commands
+   */
+
+  // Wheel control
   private WheelSystem m_subsystem;
   private double m_intakeSpeed, m_shooterSpeed;
-  private CommandTimer m_timer = new CommandTimer();
   private double m_terminalIntakeSpeed;
   private double m_terminalShooterSpeed;
-  private int m_milliseconds;
+
+  // Timing system
+  long m_startTime;
+  long m_currentTime; 
+  long m_waitTime;
+  boolean isFinished = false;
 
   public WheelOperation(WheelSystem subsystem, double intakeSpeed, double shooterSpeed, int milliseconds, double terminalIntakeSpeed, double terminalShooterSpeed) {
     m_subsystem = subsystem;
@@ -23,6 +33,7 @@ public class WheelOperation extends CommandBase {
     m_shooterSpeed = shooterSpeed;
     m_terminalIntakeSpeed = terminalIntakeSpeed;
     m_terminalShooterSpeed = terminalShooterSpeed;
+    m_waitTime = (long) milliseconds;
     addRequirements(subsystem);
   }
 
@@ -36,13 +47,16 @@ public class WheelOperation extends CommandBase {
 
   @Override
   public void initialize() {
-    m_timer.resetTimer(m_milliseconds);
+    m_startTime = System.currentTimeMillis();
   }
 
   @Override
   public void execute() {
     m_subsystem.setIntakeWheelSpeed(m_intakeSpeed);
     m_subsystem.setShooterWheelSpeed(m_shooterSpeed);
+    m_currentTime = System.currentTimeMillis();
+    long m_differential = m_currentTime - m_startTime;
+    isFinished = m_differential >= m_waitTime;
   }
 
   @Override
@@ -53,7 +67,6 @@ public class WheelOperation extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    //return m_timer.isFinished();
-    return true; // need to fix
+    return isFinished;
   }
 }

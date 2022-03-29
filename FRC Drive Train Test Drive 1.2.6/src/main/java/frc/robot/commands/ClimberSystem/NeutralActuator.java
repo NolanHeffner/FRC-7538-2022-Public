@@ -6,6 +6,7 @@ package frc.robot.commands.ClimberSystem;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSystem;
+import frc.robot.subsystems.ClimberSystem.Mode;
 
 public class NeutralActuator extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -17,12 +18,8 @@ public class NeutralActuator extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    m_subsystem.set(0);
-  }
-
-  @Override
   public void execute() {
+    m_subsystem.setMode(Mode.BRAKE);
     m_subsystem.set(0);
   }
 
@@ -32,6 +29,6 @@ public class NeutralActuator extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

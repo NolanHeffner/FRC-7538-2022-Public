@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.Auto.Autonomous;
 import frc.robot.commands.DriveTrain.WestCoastDrive;
-import frc.robot.commands.DriveTrain.ZOOM;
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.IntakeBalls;
@@ -73,6 +72,7 @@ public class RobotContainer {
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
     JoystickButton xboxControllerYButton = new JoystickButton(driver, Constants.XBOX_Y_BUTTON);
+    // JoystickButton xboxControllerXButton = new JoystickButton(driver, Constants.XBOX_X_BUTTON);
 
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
     JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
@@ -80,8 +80,6 @@ public class RobotContainer {
     JoystickButton xboxControllerScreenieButton = new JoystickButton(driver, Constants.XBOX_SCREENIE_BUTTON);
     JoystickButton xboxControllerThreeLinesButton = new JoystickButton(driver, Constants.XBOX_THREE_LINES_BUTTON);
     
-    JoystickButton xboxControllerLeftStickButton = new JoystickButton(driver, Constants.XBOX_LEFT_STICK_BUTTON);
-
     // Link triggers to commands
     
     xboxControllerAButton.whenPressed(new AutoShoot(m_wheelSystem));
@@ -90,14 +88,13 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new RunShooter(m_wheelSystem, 0.46)));
+    // xboxControllerXButton.whileHeld(new ZOOM(m_driveTrain));
 
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
     xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.3)); // Does not work lol bc shooter is so jank
 
-    xboxControllerScreenieButton.whileHeld(new ActuateClimber(m_climberSystem, () -> -Constants.MAX_CLIMB_SPEED));
-    xboxControllerThreeLinesButton.whileHeld(new ActuateClimber(m_climberSystem, () -> Constants.MAX_CLIMB_SPEED));
-
-    xboxControllerLeftStickButton.whileHeld(new ZOOM(m_driveTrain));
+    xboxControllerScreenieButton.whileHeld(new ActuateClimber(m_climberSystem, -Constants.MAX_CLIMB_SPEED));
+    xboxControllerThreeLinesButton.whileHeld(new ActuateClimber(m_climberSystem, Constants.MAX_CLIMB_SPEED));
   }
 
   public Command getAutonomousCommand() {

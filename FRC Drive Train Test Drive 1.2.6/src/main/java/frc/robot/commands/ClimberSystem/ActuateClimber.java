@@ -4,20 +4,15 @@
 
 package frc.robot.commands.ClimberSystem;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSystem;
-
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ActuateClimber extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSystem m_subsystem;
-  private final DoubleSupplier speed;
+  private final double speed;
 
-  public ActuateClimber(ClimberSystem subsystem, DoubleSupplier speed) {
+  public ActuateClimber(ClimberSystem subsystem, double speed) {
     m_subsystem = subsystem;
     this.speed = speed;
     addRequirements(subsystem);
@@ -25,7 +20,7 @@ public class ActuateClimber extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.set(MathUtil.clamp(speed.getAsDouble(), -Constants.MAX_CLIMB_SPEED, Constants.MAX_CLIMB_SPEED));
+    m_subsystem.set(speed);
   }
 
   @Override

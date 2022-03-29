@@ -25,6 +25,7 @@ public class WestCoastDrive extends CommandBase {
   public void execute() {
     double leftStickYAsDouble = leftStickY.getAsDouble();
     double rightStickXAsDouble = rightStickX.getAsDouble();
+    //double 
     
     /* Uncommented when receive limelight
     double Kp = -0.1;
