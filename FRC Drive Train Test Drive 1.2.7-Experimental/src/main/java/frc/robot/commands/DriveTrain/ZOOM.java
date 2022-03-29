@@ -18,7 +18,8 @@ public class ZOOM extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.setMotors(-0.0, -0.0);
+    boolean isZoomCurrentlyEnabled = m_subsystem.getZoom();
+    m_subsystem.setZoom(!isZoomCurrentlyEnabled);
   }
 
   @Override

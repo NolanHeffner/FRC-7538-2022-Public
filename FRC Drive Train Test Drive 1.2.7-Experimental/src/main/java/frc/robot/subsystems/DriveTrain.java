@@ -28,6 +28,8 @@ public class DriveTrain extends SubsystemBase {
   WPI_TalonFX rightA = new WPI_TalonFX(Constants.RIGHT_1_CAN_ID);
   WPI_TalonFX rightB = new WPI_TalonFX(Constants.RIGHT_2_CAN_ID);
 
+  boolean zoomEnabled = false;
+
   // Instantiates Pigeon 2.0 IMU
 
   /*WPI_Pigeon2 pigeonGyro = new WPI_Pigeon2(Constants.PIGEON_CAN_ID);
@@ -93,7 +95,9 @@ public class DriveTrain extends SubsystemBase {
   */
 
   // Yes, I know I can implement Differential Drive and just use arcadeDrive(frw, rot), I'm just bored plz don't judge
-  public void arcadeDrive(double leftStickY, double rightStickX, double turnFactor, double maxSpeed) {
+  public void arcadeDrive(double leftStickY, double rightStickX) {
+    double maxSpeed = zoomEnabled ? Constants.ZOOM_SPEED : Constants.MAX_DRIVE_SPEED;
+	  double turnFactor = zoomEnabled ? Constants.ZOOM_TURN_FACTOR : Constants.TURN_FACTOR;
     double scalingFactor = maxSpeed / (1 + turnFactor);
     // Arcade-style driving; left stick forward/backward for driving speed, right stick left/right for turning
     double leftStickY_DB = deadBand(leftStickY, Constants.LY_DEADBAND);
@@ -138,6 +142,14 @@ public class DriveTrain extends SubsystemBase {
     // Pushes new speeds to drive train using set() method
     leftA.set(lSpeed);
     rightA.set(rSpeed);
+  }
+
+  public boolean getZoom() {
+    return zoomEnabled;
+  }
+
+  public void setZoom(boolean bool) {
+    zoomEnabled = bool;
   }
 
   /*
