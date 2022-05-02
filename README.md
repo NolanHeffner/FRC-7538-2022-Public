@@ -20,6 +20,8 @@ In future years we hope to further incorporate encoders, kinematics, and odometr
 
 1.2.7-Experimental (branch) - Changes to control scheme etc. we have not had time to properly test and therefore do not feel comfortable using during upcoming competitions. Includes limelight, gyro magics, changes to arcade drive
 
+Update as of 5/1/2022 - We don't know what branch does what anymore
+
 ## Contributors:
 Nolan Heffner, Emma, Jessica Gay (former), Anthony, Spencer, Abdou Senghore, Jabel Senghore, and Micah
 
