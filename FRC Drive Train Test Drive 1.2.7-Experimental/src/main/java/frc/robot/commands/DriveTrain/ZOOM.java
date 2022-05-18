@@ -5,6 +5,7 @@
 package frc.robot.commands.DriveTrain;
 
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ZOOM extends CommandBase {
@@ -20,6 +21,7 @@ public class ZOOM extends CommandBase {
   public void execute() {
     boolean isZoomCurrentlyEnabled = m_subsystem.getZoom();
     m_subsystem.setZoom(!isZoomCurrentlyEnabled);
+    SmartDashboard.putBoolean("Is Zoom enabled? ", !isZoomCurrentlyEnabled);
   }
 
   @Override

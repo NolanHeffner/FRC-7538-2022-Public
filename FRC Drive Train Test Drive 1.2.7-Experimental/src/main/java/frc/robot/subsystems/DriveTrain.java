@@ -50,16 +50,15 @@ public class DriveTrain extends SubsystemBase {
   */
 
   public DriveTrain() {
-    // Inverts right motors so that positive inputs move robot forward
     invertRightMotors(true);
     setMode(Mode.COAST);
+    SmartDashboard.putBoolean("Is Zoom enabled? ", false);
 
     leftB.follow(leftA);
     rightB.follow(rightA);
 
     //m_limit_chooser.setDefaultOption("No limit", false);
     //m_limit_chooser.addOption("Limited", true);
-
     // m_odometry = new DifferentialDriveOdometry(getHeading());
   }
 
@@ -76,12 +75,14 @@ public class DriveTrain extends SubsystemBase {
   public void setMode(Mode mode) {
     switch(mode) {
       case COAST:
+        SmartDashboard.putString("Motor Mode: ", "Coasting");
         leftA.setNeutralMode(NeutralMode.Coast);
         leftB.setNeutralMode(NeutralMode.Coast);
         rightA.setNeutralMode(NeutralMode.Coast);
         rightB.setNeutralMode(NeutralMode.Coast);
         break;
       case BRAKE:
+        SmartDashboard.putString("Motor Mode: ", "Braking");
         leftA.setNeutralMode(NeutralMode.Brake);
         leftB.setNeutralMode(NeutralMode.Brake);
         rightA.setNeutralMode(NeutralMode.Brake);
