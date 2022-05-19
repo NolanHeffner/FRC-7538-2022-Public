@@ -21,6 +21,8 @@ In future years we hope to switch to a swerve drive and use more complex subsyst
 ## Contributors:
 Nolan Heffner, Emma, Jessica Gay (former), Anthony Pinzon, Spencer, Abdou Senghore, Jabel Senghore, and Micah
 
+Note (5/19/22): Nolan, Abdou, and Jabel are graduating. Emma is leaving the team. Anthony Pinzon and Landon will probably be our primary programmers in the 2023 build season.
+
 ## Contact:
 You can text Nolan at 678-571-4047 or locate Mrs. Jenkins' email through the Mountain View High School (Lawrenceville, GA) website's staff directory.
 Either way, we'd love to collaborate with other FRC teams!
