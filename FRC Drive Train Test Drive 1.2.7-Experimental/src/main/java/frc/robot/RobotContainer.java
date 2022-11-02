@@ -5,14 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// All Drive Train commands and subsystems
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.commands.Auto.Autonomous;
-import frc.robot.commands.DriveTrain.WestCoastDrive;
-import frc.robot.commands.DriveTrain.ZOOM;
+// All Swerve Drive commands and subsystems
+import frc.robot.subsystems.Swerve;
+import frc.robot.commands.Auto.exampleAuto;
+import frc.robot.commands.TeleopSwerve;
 // All Wheel System commands and subsystems
 import frc.robot.subsystems.WheelSystem;
 import frc.robot.commands.WheelSystem.IntakeBalls;
@@ -43,26 +43,29 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;*/
 public class RobotContainer {
 
   // Create subsystems
-  private final DriveTrain m_driveTrain = new DriveTrain();
   private final WheelSystem m_wheelSystem = new WheelSystem();
   private final ClimberSystem m_climberSystem = new ClimberSystem();
-  private final Autonomous autoCommand;
+  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+
 
   // Instantiate driver controller
   public static XboxController driver = new XboxController(Constants.DRIVER_XBOX_PORT);
+  private final int translationAxis = XboxController.Axis.kLeftY.value;
+  private final int strafeAxis = XboxController.Axis.kLeftX.value;
+  private final int rotationAxis = XboxController.Axis.kRightX.value;
 
+
+  private final Swerve s_Swerve = new Swerve();
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
-    m_driveTrain.setDefaultCommand(new WestCoastDrive(
-      m_driveTrain,
-      driver::getLeftY,
-      driver::getRightX));
+    boolean fieldRelative = true;
+    boolean openLoop = true;
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     m_wheelSystem.setDefaultCommand(
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new ShootBalls(m_wheelSystem, driver::getRightTriggerAxis)));
     m_climberSystem.setDefaultCommand(new NeutralActuator(m_climberSystem));
-    autoCommand = new Autonomous(m_driveTrain, m_wheelSystem);
     configureButtonBindings();
   }
 
@@ -72,7 +75,6 @@ public class RobotContainer {
     JoystickButton xboxControllerAButton = new JoystickButton(driver, Constants.XBOX_A_BUTTON);
     JoystickButton xboxControllerBButton = new JoystickButton(driver, Constants.XBOX_B_BUTTON);
     JoystickButton xboxControllerYButton = new JoystickButton(driver, Constants.XBOX_Y_BUTTON);
-    JoystickButton xboxControllerXButton = new JoystickButton(driver, Constants.XBOX_X_BUTTON);
 
     JoystickButton xboxControllerLeftBumper = new JoystickButton(driver, Constants.XBOX_LEFT_BUMPER);
     JoystickButton xboxControllerRightBumper = new JoystickButton(driver, Constants.XBOX_RIGHT_BUMPER);
@@ -88,13 +90,13 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new IntakeBalls(m_wheelSystem, driver::getLeftTriggerAxis),
         new RunShooter(m_wheelSystem, 0.46)));
-    xboxControllerXButton.whenPressed(new ZOOM(m_driveTrain));
 
     xboxControllerLeftBumper.whileHeld(new RunIntake(m_wheelSystem, -0.3));
     xboxControllerRightBumper.whileHeld(new RunShooter(m_wheelSystem, -0.3)); // Does not work lol bc shooter is so jank
 
     xboxControllerScreenieButton.whileHeld(new ActuateClimber(m_climberSystem, -Constants.MAX_CLIMB_SPEED));
     xboxControllerThreeLinesButton.whileHeld(new ActuateClimber(m_climberSystem, Constants.MAX_CLIMB_SPEED));
+    zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
   }
 
   public Command getAutonomousCommand() {
@@ -148,7 +150,6 @@ public class RobotContainer {
 
     // A RamseteCommand will run in autonomous
     //return ramseteCommand.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
-
-    return autoCommand;
+    return new exampleAuto(s_Swerve);
   }
 }
